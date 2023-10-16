@@ -28,7 +28,7 @@ bool bAllocTable2Dim(int ***piTable, int iSizeX, int iSizeY) {
     
     *piTable = new int*[iSizeX];
     for (int i = 0; i < iSizeX; i++) {
-        *piTable[i] = new int[iSizeY];
+        (*piTable)[i] = new int[iSizeY];
     }
 
     return true;
@@ -36,4 +36,6 @@ bool bAllocTable2Dim(int ***piTable, int iSizeX, int iSizeY) {
 
 int main() {
     vAllocTableFill34(10);
+    int** pi2DimTable;
+    bAllocTable2Dim(&pi2DimTable, 5, 3);
 }
