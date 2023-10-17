@@ -22,7 +22,7 @@ void vAllocTableFill34(int iSize) {
 }
 
 bool bAllocTable2Dim(int ***piTable, int iSizeX, int iSizeY) {
-    if (iSizeX <=0 || iSizeY <= 0) {
+    if (iSizeX < 0 || iSizeY < 0) {
         return false;
     }
     
@@ -35,7 +35,7 @@ bool bAllocTable2Dim(int ***piTable, int iSizeX, int iSizeY) {
 }
 
 bool bDeallocTable2Dim(int **piTable, int iSizeX, int iSizeY) {
-    if (iSizeX <=0 || iSizeY <= 0) {
+    if (iSizeX < 0 || iSizeY < 0) {
         return false;
     }
 
