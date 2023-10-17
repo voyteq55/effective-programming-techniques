@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ex1.h"
+#include "tables.h"
 #include "CTable.h"
 
 int main() {

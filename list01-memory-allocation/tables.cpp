@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ex1.h"
+#include "tables.h"
 
 void vAllocTableFill34(int iSize) {
     int *pArray;
