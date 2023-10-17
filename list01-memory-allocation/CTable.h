@@ -3,10 +3,10 @@
 
 const int DEFAULT_TABLE_LENGTH = 16;
 const std::string DEFAULT_TABLE_NAME = "Default table name";
-const std::string DEFAULT_TEXT = "bezp: ";
-const std::string PARAM_TEXT = "parametr: ";
-const std::string COPY_TEXT = "kopiuj: ";
-const std::string DELETE_TEXT = "usuwam: ";
+const std::string DEFAULT_TEXT = "No param. constructor: ";
+const std::string PARAM_TEXT = "Param. constructor: ";
+const std::string COPY_TEXT = "Copying constructor: ";
+const std::string DELETE_TEXT = "Deleting: ";
 const std::string COPY = "_copy";
 
 class CTable {

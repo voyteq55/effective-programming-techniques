@@ -3,6 +3,7 @@
 #include "CTable.h"
 
 int main() {
+    std::cout << "Showing table filled with constants: ";
     vAllocTableFill34(10);
     int** pi2DimTable;
     bAllocTable2Dim(&pi2DimTable, 5, 3);
