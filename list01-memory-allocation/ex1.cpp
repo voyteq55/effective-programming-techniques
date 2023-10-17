@@ -46,9 +46,3 @@ bool bDeallocTable2Dim(int **piTable, int iSizeX, int iSizeY) {
     delete[] piTable;
     return true;
 }
-
-int main() {
-    vAllocTableFill34(10);
-    int** pi2DimTable;
-    bAllocTable2Dim(&pi2DimTable, 5, 3);
-}
