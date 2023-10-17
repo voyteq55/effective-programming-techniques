@@ -1,6 +1,7 @@
 #include <iostream>
 #include "tables.h"
 #include "CTable.h"
+#include "modification.h"
 
 int main() {
     std::cout << "Showing table filled with constants: ";
@@ -33,6 +34,11 @@ int main() {
 
     vModTab(cStaticTable, 50);
     cStaticTable.vPrintTabSize();
+
+    std::cout << "\nModification:" << std::endl;
+    int **pTableBlock = allocateTable2DBlock(6, 4);
+    printTable2DBlock(pTableBlock, 6, 4);
+    deallocateTable2DBlock(pTableBlock);
 
     return 0;
 }
