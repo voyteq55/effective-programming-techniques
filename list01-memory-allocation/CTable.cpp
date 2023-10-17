@@ -46,7 +46,15 @@ bool CTable::bSetNewSize(int iNewTableLen) {
 
     delete[] pTable;
     pTable = pNewTable;
+    iTableLength = iNewTableLen;
+
+    std::cout << "try to change " << sName << " size to " << iNewTableLen << std::endl;
+
     return true;
+}
+
+void CTable::vPrintTabSize() {
+    std::cout << "size of " << sName << ": " << iTableLength << std::endl;
 }
 
 void vModTab(CTable *pcTab, int iNewSize) {

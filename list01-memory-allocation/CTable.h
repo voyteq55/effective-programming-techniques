@@ -22,6 +22,7 @@ class CTable {
         ~CTable();
         void vSetName(std::string sName) { this->sName = sName; };
         bool bSetNewSize(int iTableLen);
+        void vPrintTabSize();
         CTable *pcClone() { return new CTable(*this); };
 };
 
