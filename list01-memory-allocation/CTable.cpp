@@ -9,7 +9,7 @@ CTable::CTable() {
 }
 
 CTable::CTable(std::string sName, int iTableLen) {
-    this->sName = sName;
+    (*this).sName = sName;
     pTable = new int[iTableLen];
     iTableLength = iTableLen;
     std::cout << PARAM_TEXT << sName << std::endl;
@@ -58,7 +58,7 @@ void CTable::vPrintTabSize() {
 }
 
 void vModTab(CTable *pcTab, int iNewSize) {
-    pcTab->bSetNewSize(iNewSize);
+    (*pcTab).bSetNewSize(iNewSize);
 }
 
 void vModTab(CTable cTab, int iNewSize) {
