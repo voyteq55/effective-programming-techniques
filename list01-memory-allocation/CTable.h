@@ -14,6 +14,7 @@ class CTable {
         std::string sName;
         int* pTable;
         int iTableLength;
+        void initTable(std::string sName, int iTableLen);
 
     public:
         CTable();

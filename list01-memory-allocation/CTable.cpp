@@ -1,25 +1,24 @@
 #include <iostream>
 #include "CTable.h"
 
+void CTable::initTable(std::string sName, int iTableLen) {
+    (*this).sName = sName;
+    pTable = new int[iTableLen];
+    iTableLength = iTableLen;
+}
+
 CTable::CTable() {
-    sName = DEFAULT_TABLE_NAME;
-    pTable = new int[DEFAULT_TABLE_LENGTH];
-    iTableLength = DEFAULT_TABLE_LENGTH;
+    initTable(DEFAULT_TABLE_NAME, DEFAULT_TABLE_LENGTH);
     std::cout << DEFAULT_TEXT << sName << std::endl;
 }
 
 CTable::CTable(std::string sName, int iTableLen) {
-    (*this).sName = sName;
-    pTable = new int[iTableLen];
-    iTableLength = iTableLen;
+    initTable(sName, iTableLen);
     std::cout << PARAM_TEXT << sName << std::endl;
 }
 
 CTable::CTable(const CTable &pcOther) {
-    sName = pcOther.sName + COPY;
-    pTable = new int[pcOther.iTableLength];
-    iTableLength = pcOther.iTableLength;
-
+    initTable(pcOther.sName + COPY, pcOther.iTableLength);
     for (int i = 0; i < iTableLength; i++) {
         pTable[i] = pcOther.pTable[i];
     }
