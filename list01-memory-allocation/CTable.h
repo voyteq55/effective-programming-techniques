@@ -21,7 +21,7 @@ class CTable {
         CTable(std::string sName, int iTableLen);
         CTable(const CTable &pcOther);
         ~CTable();
-        void vSetName(std::string sName) { this->sName = sName; };
+        void vSetName(std::string sName) { (*this).sName = sName; };
         bool bSetNewSize(int iTableLen);
         void vPrintTabSize();
         CTable *pcClone() { return new CTable(*this); };
