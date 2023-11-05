@@ -8,7 +8,6 @@ int **allocateTable2DBlock(int iSizeX, int iSizeY) {
 
     int **pTableBlock = new int*[iSizeX];
     *pTableBlock = new int[iSizeX * iSizeY];
-    
     for (int i = 0; i < iSizeX; i++) {
         pTableBlock[i] = (*pTableBlock) + (i * iSizeY);
     }
