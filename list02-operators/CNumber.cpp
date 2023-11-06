@@ -48,6 +48,13 @@ CNumber CNumber::operator=(int iValue) {
 }
 
 CNumber CNumber::operator+(CNumber &pcNewValue) {
+    if (bIsNegative && !pcNewValue.bIsNegative) {
+        return pcNewValue - *this;
+    }
+    if (!bIsNegative && pcNewValue.bIsNegative) {
+        return *this - pcNewValue;
+    }
+    
     int iMaxLength = iLength > pcNewValue.iLength ? iLength : pcNewValue.iLength;
     CNumber cResult(iMaxLength + 1); // sum can have at most 1 digit more than the greater of added numbers
     int iRemainder = 0;
@@ -73,6 +80,53 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
         cResult.bIsNegative = true;
     }
     return cResult;
+}
+
+CNumber CNumber::operator-(CNumber &pcNewValue) {
+    return CNumber();
+}
+
+CNumber CNumber::operator*(CNumber &pcNewValue) {
+    CNumber cResult(iLength + pcNewValue.iLength);
+    
+    for (int i = 0; i < pcNewValue.iLength; i++) {
+        CNumber cSumPart(iLength + 1);
+        int iRemainder = 0;
+        for (int j = 0; j < iLength; j++) {
+            int iResult = pcNewValue.piNumber[i] * piNumber[j] + iRemainder;
+            cSumPart.piNumber[j] = iResult % 10;
+            iRemainder = iResult / 10;
+        }
+        cSumPart.piNumber[iLength] = iRemainder;
+        
+        cSumPart.removeLeadingZeros();
+        cSumPart.multiplyBy10ToPowerOf(i);
+        cResult = cResult + cSumPart;
+    }
+    
+    cResult.removeLeadingZeros();
+    if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
+        cResult.bIsNegative = true;
+    }
+    return cResult;
+}
+
+void CNumber::multiplyBy10ToPowerOf(int iExponent) {
+    if (iExponent > 0) {
+        int iNewLength = iLength + iExponent;
+        int *piNewNumber = new int[iNewLength];
+        
+        for (int i = 0; i < iLength; i++) {
+            piNewNumber[i + iExponent] = piNumber[i];
+        }
+        for (int i = 0; i < iExponent; i++) {
+            piNewNumber[i] = 0;
+        }
+        
+        iLength = iNewLength;
+        delete[] piNumber;
+        piNumber = piNewNumber;
+    }
 }
 
 /* THIS IS WRONG */

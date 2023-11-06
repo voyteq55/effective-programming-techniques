@@ -30,6 +30,7 @@ class CNumber {
         std::string toString();
         void ensureCapacity(int iRequiredLength);
         void removeLeadingZeros();
+        void multiplyBy10ToPowerOf(int iExponent);
         void printTable();
 };
 
