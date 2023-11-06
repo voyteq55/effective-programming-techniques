@@ -11,16 +11,11 @@ CNumber::CNumber() {
 }
 
 CNumber::~CNumber() {
-    delete piNumber;
+    delete[] piNumber;
 }
 
 CNumber::CNumber(const CNumber &copy) {
-    iLength = copy.iLength;
-    piNumber = new int[iLength];
-    for (int i = 0; i < iLength; i++) {
-        piNumber[i] = copy.piNumber[i];
-    }
-    bIsNegative = copy.bIsNegative;
+    makeCopy(copy);
 }
 
 CNumber CNumber::operator=(int iValue) {
@@ -38,6 +33,29 @@ CNumber CNumber::operator=(int iValue) {
     }
     return *this;
 }
+
+/* THIS IS WRONG */
+//CNumber CNumber::operator=(const CNumber &pcNewValue) {
+//    piNumber = pcNewValue.piNumber;
+//    iLength = pcNewValue.iLength;
+//    return *this;
+//}
+
+CNumber CNumber::operator=(const CNumber &pcNewValue) {
+    delete[] piNumber;
+    makeCopy(pcNewValue);
+    return *this;
+}
+
+void CNumber::makeCopy(const CNumber &reference) {
+    iLength = reference.iLength;
+    piNumber = new int[iLength];
+    for (int i = 0; i < iLength; i++) {
+        piNumber[i] = reference.piNumber[i];
+    }
+    bIsNegative = reference.bIsNegative;
+}
+
 
 void CNumber::printTable() {
     std::cout << "[";

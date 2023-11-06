@@ -9,7 +9,8 @@ class CNumber {
         int *piNumber;
         int iLength;
         bool bIsNegative;
-
+        void makeCopy(const CNumber &reference);
+    
     public:
         CNumber();
         ~CNumber();
