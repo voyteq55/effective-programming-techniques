@@ -2,7 +2,7 @@
 #define CNUMBER_H
 #include <string>
 
-const int NUMBER_DEFAULT_LENGTH = 10;
+const int NUMBER_DEFAULT_LENGTH = 1;
 
 class CNumber {
     private:
@@ -27,6 +27,8 @@ class CNumber {
         CNumber operator*(int iNewValue);
         CNumber operator-(int iNewValue);
         CNumber operator/(int iNewValue);
+        CNumber opposite();
+        bool operator>(CNumber &pcNewValue);
         std::string toString();
         void ensureCapacity(int iRequiredLength);
         void removeLeadingZeros();

@@ -42,6 +42,14 @@ int main() {
 //    n7 = n3 * n4;
     std::cout << n7.toString() << "\n";
     n7.printTable();
+    std::cout << n7.opposite().toString() << "\n";
+    
+    std::cout << (n4 - n2).toString() << "\n";
+    std::cout << (n2 - n4).toString() << "\n";
+    std::cout << (n4 - cNum1).toString() << "\n";
+    std::cout << (cNum1 - n4).toString() << "\n";
+    std::cout << (n4.opposite() - cNum1).toString() << "\n";
+    std::cout << (cNum1 - n3).toString() << "\n";
     
     return 0;
 }

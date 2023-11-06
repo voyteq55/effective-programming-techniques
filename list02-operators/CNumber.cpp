@@ -49,10 +49,10 @@ CNumber CNumber::operator=(int iValue) {
 
 CNumber CNumber::operator+(CNumber &pcNewValue) {
     if (bIsNegative && !pcNewValue.bIsNegative) {
-        return pcNewValue - *this;
+        return pcNewValue.opposite() - *this;
     }
     if (!bIsNegative && pcNewValue.bIsNegative) {
-        return *this - pcNewValue;
+        return (*this).opposite() - pcNewValue;
     }
     
     int iMaxLength = iLength > pcNewValue.iLength ? iLength : pcNewValue.iLength;
@@ -83,7 +83,31 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
 }
 
 CNumber CNumber::operator-(CNumber &pcNewValue) {
-    return CNumber();
+    if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
+        return pcNewValue.opposite() + *this;
+    }
+    if (pcNewValue > *this) {
+        return (pcNewValue - *this).opposite();
+    }
+    
+    CNumber cResult(iLength);
+    int iNegativeRemainder = 0;
+    for (int i = 0; i < iLength; i++) {
+        int iFirstDigit = piNumber[i] - iNegativeRemainder;
+        int iSecondDigit = i < pcNewValue.iLength ? pcNewValue.piNumber[i] : 0;
+        
+        if (iFirstDigit < iSecondDigit) {
+            cResult.piNumber[i] = iFirstDigit + 10 - iSecondDigit;
+            iNegativeRemainder = 1;
+        } else {
+            cResult.piNumber[i] = iFirstDigit - iSecondDigit;
+            iNegativeRemainder = 0;
+        }
+    }
+    
+    cResult.removeLeadingZeros();
+    cResult.bIsNegative = bIsNegative;
+    return cResult;
 }
 
 CNumber CNumber::operator*(CNumber &pcNewValue) {
@@ -109,6 +133,22 @@ CNumber CNumber::operator*(CNumber &pcNewValue) {
         cResult.bIsNegative = true;
     }
     return cResult;
+}
+
+CNumber CNumber::opposite() {
+    CNumber cOpposite = *this;
+    cOpposite.bIsNegative = !cOpposite.bIsNegative;
+    return cOpposite;
+}
+
+bool CNumber::operator>(CNumber &pcNewValue) {
+    if (iLength > pcNewValue.iLength) return true;
+    if (iLength < pcNewValue.iLength) return false;
+    for (int i = iLength - 1; i >= 0; i++) {
+        if (piNumber[i] > pcNewValue.piNumber[i]) return true;
+        if (piNumber[i] < pcNewValue.piNumber[i]) return false;
+    }
+    return false;
 }
 
 void CNumber::multiplyBy10ToPowerOf(int iExponent) {
