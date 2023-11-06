@@ -1,5 +1,6 @@
 #include "CNumber.h"
 #include <iostream>
+#include <sstream>
 
 CNumber::CNumber() {
     iLength = NUMBER_DEFAULT_LENGTH;
@@ -23,14 +24,18 @@ CNumber CNumber::operator=(int iValue) {
     if (bIsNegative) {
         iValue = -iValue;
     }
+    for (int i = 0; i < iLength; i++) {
+        piNumber[i] = 0;
+    }
     int iIndexCounter = 0;
     while (iValue >= 1) {
-        ensureCapacity(iIndexCounter);
+        ensureCapacity(iIndexCounter + 1);
         int iNewDigit = iValue % 10;
         iValue = iValue / 10;
         piNumber[iIndexCounter] = iNewDigit;
         iIndexCounter++;
     }
+    removeLeadingZeros();
     return *this;
 }
 
@@ -56,6 +61,37 @@ void CNumber::makeCopy(const CNumber &reference) {
     bIsNegative = reference.bIsNegative;
 }
 
+std::string CNumber::toString() {
+    std::ostringstream stream;
+    if (bIsNegative) {
+        stream << "-";
+    }
+    
+    int index = iLength - 1;
+    while (index > 0) {
+        stream << piNumber[index];
+        index--;
+    }
+    stream << piNumber[0];
+    
+    return stream.str();
+}
+
+void CNumber::removeLeadingZeros() {
+    if (piNumber[iLength - 1] == 0) {
+        int iNewLength = iLength;
+        while (piNumber[iNewLength - 1] == 0 && iNewLength > 1) {
+            iNewLength--;
+        }
+        iLength = iNewLength;
+        int *piNewNumber = new int[iNewLength];
+        for (int i = 0; i < iNewLength; i++) {
+            piNewNumber[i] = piNumber[i];
+        }
+        delete[] piNumber;
+        piNumber = piNewNumber;
+    }
+}
 
 void CNumber::printTable() {
     std::cout << "[";
@@ -71,7 +107,6 @@ void CNumber::printTable() {
     }
     std::cout << "\n";
 }
-
 
 void CNumber::ensureCapacity(int iRequiredLength) {
     if (iRequiredLength > iLength) {

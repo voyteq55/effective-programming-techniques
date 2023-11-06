@@ -27,6 +27,7 @@ class CNumber {
         CNumber operator/(int iNewValue);
         std::string toString();
         void ensureCapacity(int iRequiredLength);
+        void removeLeadingZeros();
         void printTable();
 };
 
