@@ -7,6 +7,7 @@ CNumber::CNumber() {
     for (int i = 0; i < iLength; i++) {
         piNumber[i] = 0;
     }
+    bIsNegative = false;
 }
 
 CNumber::~CNumber() {
@@ -16,9 +17,17 @@ CNumber::~CNumber() {
 CNumber::CNumber(const CNumber &copy) {
     iLength = copy.iLength;
     piNumber = new int[iLength];
+    for (int i = 0; i < iLength; i++) {
+        piNumber[i] = copy.piNumber[i];
+    }
+    bIsNegative = copy.bIsNegative;
 }
 
 CNumber CNumber::operator=(int iValue) {
+    bIsNegative = iValue < 0 ? true : false;
+    if (bIsNegative) {
+        iValue = -iValue;
+    }
     int iIndexCounter = 0;
     while (iValue >= 1) {
         ensureCapacity(iIndexCounter);
@@ -38,7 +47,11 @@ void CNumber::printTable() {
     for (int i = iLength - 2; i >= 0; i--) {
         std::cout << ", " << piNumber[i];
     }
-    std::cout << "]\n";
+    std::cout << "]";
+    if (bIsNegative) {
+        std::cout << " (negative)";
+    }
+    std::cout << "\n";
 }
 
 

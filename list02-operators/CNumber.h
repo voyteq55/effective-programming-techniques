@@ -8,6 +8,7 @@ class CNumber {
     private:
         int *piNumber;
         int iLength;
+        bool bIsNegative;
 
     public:
         CNumber();
