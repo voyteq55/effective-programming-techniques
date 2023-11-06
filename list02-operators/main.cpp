@@ -25,5 +25,12 @@ int main() {
     cNum0.printTable();
     cNum1.printTable();
     
+    CNumber n3, n4, n5;
+    n3 = 1234567899;
+    n4 = 1234567899;
+    n5 = n3 + n4;
+    
+    n5.printTable();
+    
     return 0;
 }

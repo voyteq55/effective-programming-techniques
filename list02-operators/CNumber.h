@@ -10,6 +10,8 @@ class CNumber {
         int iLength;
         bool bIsNegative;
         void makeCopy(const CNumber &reference);
+        CNumber(int iLen);
+        void initEmpty(int iLen);
     
     public:
         CNumber();

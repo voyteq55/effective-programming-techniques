@@ -3,7 +3,15 @@
 #include <sstream>
 
 CNumber::CNumber() {
-    iLength = NUMBER_DEFAULT_LENGTH;
+    initEmpty(NUMBER_DEFAULT_LENGTH);
+}
+
+CNumber::CNumber(int iLen) {
+    initEmpty(iLen);
+}
+
+void CNumber::initEmpty(int iLen) {
+    iLength = iLen;
     piNumber = new int[iLength];
     for (int i = 0; i < iLength; i++) {
         piNumber[i] = 0;
@@ -37,6 +45,34 @@ CNumber CNumber::operator=(int iValue) {
     }
     removeLeadingZeros();
     return *this;
+}
+
+CNumber CNumber::operator+(CNumber &pcNewValue) {
+    int iMaxLength = iLength > pcNewValue.iLength ? iLength : pcNewValue.iLength;
+    CNumber cResult(iMaxLength + 1); // sum can have at most 1 digit more than the greater of added numbers
+    int iRemainder = 0;
+    for (int i = 0; i < iMaxLength; i++) {
+        int iNewDigit = iRemainder;
+        if (i < iLength) iNewDigit += piNumber[i];
+        if (i < pcNewValue.iLength) iNewDigit += pcNewValue.piNumber[i];
+        if (iNewDigit >= 10) {
+            iRemainder = 1;
+            iNewDigit = iNewDigit % 10;
+        } else {
+            iRemainder = 0;
+        }
+        cResult.piNumber[i] = iNewDigit;
+    }
+    
+    if (iRemainder == 1) {
+        cResult.piNumber[iMaxLength] = 1;
+    }
+    
+    cResult.removeLeadingZeros();
+    if (bIsNegative && pcNewValue.bIsNegative) {
+        cResult.bIsNegative = true;
+    }
+    return cResult;
 }
 
 /* THIS IS WRONG */
