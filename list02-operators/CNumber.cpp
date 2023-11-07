@@ -3,14 +3,14 @@
 #include <sstream>
 
 CNumber::CNumber() {
-    initEmpty(NUMBER_DEFAULT_LENGTH);
+    vInitEmpty(NUMBER_DEFAULT_LENGTH);
 }
 
 CNumber::CNumber(int iLen) {
-    initEmpty(iLen);
+    vInitEmpty(iLen);
 }
 
-void CNumber::initEmpty(int iLen) {
+void CNumber::vInitEmpty(int iLen) {
     iLength = iLen;
     piNumber = new int[iLength];
     for (int i = 0; i < iLength; i++) {
@@ -24,7 +24,7 @@ CNumber::~CNumber() {
 }
 
 CNumber::CNumber(const CNumber &copy) {
-    makeCopy(copy);
+    vMakeCopy(copy);
 }
 
 CNumber CNumber::operator=(int iValue) {
@@ -37,22 +37,22 @@ CNumber CNumber::operator=(int iValue) {
     }
     int iIndexCounter = 0;
     while (iValue >= 1) {
-        ensureCapacity(iIndexCounter + 1);
-        int iNewDigit = iValue % 10;
-        iValue = iValue / 10;
+        vEnsureCapacity(iIndexCounter + 1);
+        int iNewDigit = iValue % BASE;
+        iValue = iValue / BASE;
         piNumber[iIndexCounter] = iNewDigit;
         iIndexCounter++;
     }
-    removeLeadingZeros();
+    vRemoveLeadingZeros();
     return *this;
 }
 
 CNumber CNumber::operator+(CNumber &pcNewValue) {
     if (bIsNegative && !pcNewValue.bIsNegative) {
-        return pcNewValue.opposite() - *this;
+        return pcNewValue.cOpposite() - *this;
     }
     if (!bIsNegative && pcNewValue.bIsNegative) {
-        return (*this).opposite() - pcNewValue;
+        return (*this).cOpposite() - pcNewValue;
     }
     
     int iMaxLength = iLength > pcNewValue.iLength ? iLength : pcNewValue.iLength;
@@ -62,9 +62,9 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
         int iNewDigit = iRemainder;
         if (i < iLength) iNewDigit += piNumber[i];
         if (i < pcNewValue.iLength) iNewDigit += pcNewValue.piNumber[i];
-        if (iNewDigit >= 10) {
+        if (iNewDigit >= BASE) {
             iRemainder = 1;
-            iNewDigit = iNewDigit % 10;
+            iNewDigit = iNewDigit % BASE;
         } else {
             iRemainder = 0;
         }
@@ -75,7 +75,7 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
         cResult.piNumber[iMaxLength] = 1;
     }
     
-    cResult.removeLeadingZeros();
+    cResult.vRemoveLeadingZeros();
     if (bIsNegative && pcNewValue.bIsNegative) {
         cResult.bIsNegative = true;
     }
@@ -84,10 +84,10 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
 
 CNumber CNumber::operator-(CNumber &pcNewValue) {
     if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
-        return pcNewValue.opposite() + *this;
+        return pcNewValue.cOpposite() + *this;
     }
     if (pcNewValue > *this) {
-        return (pcNewValue - *this).opposite();
+        return (pcNewValue - *this).cOpposite();
     }
     
     CNumber cResult(iLength);
@@ -97,7 +97,7 @@ CNumber CNumber::operator-(CNumber &pcNewValue) {
         int iSecondDigit = i < pcNewValue.iLength ? pcNewValue.piNumber[i] : 0;
         
         if (iFirstDigit < iSecondDigit) {
-            cResult.piNumber[i] = iFirstDigit + 10 - iSecondDigit;
+            cResult.piNumber[i] = iFirstDigit + BASE - iSecondDigit;
             iNegativeRemainder = 1;
         } else {
             cResult.piNumber[i] = iFirstDigit - iSecondDigit;
@@ -105,7 +105,7 @@ CNumber CNumber::operator-(CNumber &pcNewValue) {
         }
     }
     
-    cResult.removeLeadingZeros();
+    cResult.vRemoveLeadingZeros();
     cResult.bIsNegative = bIsNegative;
     return cResult;
 }
@@ -118,34 +118,33 @@ CNumber CNumber::operator*(CNumber &pcNewValue) {
         int iRemainder = 0;
         for (int j = 0; j < iLength; j++) {
             int iResult = pcNewValue.piNumber[i] * piNumber[j] + iRemainder;
-            cSumPart.piNumber[j] = iResult % 10;
-            iRemainder = iResult / 10;
+            cSumPart.piNumber[j] = iResult % BASE;
+            iRemainder = iResult / BASE;
         }
         cSumPart.piNumber[iLength] = iRemainder;
         
-        cSumPart.removeLeadingZeros();
-        cSumPart.multiplyBy10ToPowerOf(i);
+        cSumPart.vRemoveLeadingZeros();
+        cSumPart.vMultiplyBy10ToPowerOf(i);
         cResult = cResult + cSumPart;
     }
     
-    cResult.removeLeadingZeros();
+    cResult.vRemoveLeadingZeros();
     if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
         cResult.bIsNegative = true;
     }
     return cResult;
 }
 
-// TODO check if pcNewValue is zero
 CNumber CNumber::operator/(CNumber &pcNewValue) {
-    if (pcNewValue.isZero()) return CNumber();
+    if (pcNewValue.bIsZero()) return CNumber();
     
     CNumber cResult(iLength);
     CNumber cDividedNumber, cDividingNumber;
     cDividedNumber = 0;
-    cDividingNumber = (pcNewValue.bIsNegative) ? pcNewValue.opposite() : pcNewValue;
+    cDividingNumber = (pcNewValue.bIsNegative) ? pcNewValue.cOpposite() : pcNewValue;
     
     for (int i = iLength - 1; i >= 0; i--) {
-        cDividedNumber.multiplyBy10ToPowerOf(1);
+        cDividedNumber.vMultiplyBy10ToPowerOf(1);
         cDividedNumber.piNumber[0] = piNumber[i];
         
         int iDivisionPart = 0;
@@ -156,14 +155,14 @@ CNumber CNumber::operator/(CNumber &pcNewValue) {
         cResult.piNumber[i] = iDivisionPart;
     }
     
-    cResult.removeLeadingZeros();
+    cResult.vRemoveLeadingZeros();
     if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
         cResult.bIsNegative = true;
     }
     return cResult;
 }
 
-CNumber CNumber::opposite() {
+CNumber CNumber::cOpposite() {
     CNumber cOpposite = *this;
     cOpposite.bIsNegative = !cOpposite.bIsNegative;
     return cOpposite;
@@ -183,14 +182,14 @@ bool CNumber::operator<=(CNumber &pcNewValue) {
     return !operator>(pcNewValue);
 }
 
-bool CNumber::isZero() {
+bool CNumber::bIsZero() {
     for (int i = iLength - 1; i >= 0; i--) {
         if (piNumber[i] != 0) return false;
     }
     return true;
 }
 
-void CNumber::multiplyBy10ToPowerOf(int iExponent) {
+void CNumber::vMultiplyBy10ToPowerOf(int iExponent) {
     if ((iExponent > 0) && (piNumber[iLength - 1] != 0)) {
         int iNewLength = iLength + iExponent;
         int *piNewNumber = new int[iNewLength];
@@ -217,11 +216,11 @@ void CNumber::multiplyBy10ToPowerOf(int iExponent) {
 
 CNumber CNumber::operator=(const CNumber &pcNewValue) {
     delete[] piNumber;
-    makeCopy(pcNewValue);
+    vMakeCopy(pcNewValue);
     return *this;
 }
 
-void CNumber::makeCopy(const CNumber &reference) {
+void CNumber::vMakeCopy(const CNumber &reference) {
     iLength = reference.iLength;
     piNumber = new int[iLength];
     for (int i = 0; i < iLength; i++) {
@@ -230,7 +229,7 @@ void CNumber::makeCopy(const CNumber &reference) {
     bIsNegative = reference.bIsNegative;
 }
 
-std::string CNumber::toString() {
+std::string CNumber::sToString() {
     std::ostringstream stream;
     if (bIsNegative) {
         stream << "-";
@@ -246,7 +245,7 @@ std::string CNumber::toString() {
     return stream.str();
 }
 
-void CNumber::removeLeadingZeros() {
+void CNumber::vRemoveLeadingZeros() {
     if (piNumber[iLength - 1] == 0) {
         int iNewLength = iLength;
         while (piNumber[iNewLength - 1] == 0 && iNewLength > 1) {
@@ -277,7 +276,7 @@ void CNumber::printTable() {
     std::cout << "\n";
 }
 
-void CNumber::ensureCapacity(int iRequiredLength) {
+void CNumber::vEnsureCapacity(int iRequiredLength) {
     if (iRequiredLength > iLength) {
         int iNewLength = iRequiredLength * 2;
         int *piNewNumber = new int[iNewLength];
@@ -287,7 +286,7 @@ void CNumber::ensureCapacity(int iRequiredLength) {
         for (int i = iLength; i < iNewLength; i++) {
             piNewNumber[i] = 0;
         }
-        delete piNumber;
+        delete[] piNumber;
         piNumber = piNewNumber;
         iLength = iNewLength;
     }

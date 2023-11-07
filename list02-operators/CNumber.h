@@ -3,15 +3,22 @@
 #include <string>
 
 const int NUMBER_DEFAULT_LENGTH = 1;
+const int BASE = 10;
 
 class CNumber {
     private:
         int *piNumber;
         int iLength;
         bool bIsNegative;
-        void makeCopy(const CNumber &reference);
         CNumber(int iLen);
-        void initEmpty(int iLen);
+        void vMakeCopy(const CNumber &reference);
+        void vInitEmpty(int iLen);
+        void vEnsureCapacity(int iRequiredLength);
+        void vRemoveLeadingZeros();
+        void vMultiplyBy10ToPowerOf(int iExponent);
+        bool operator>(CNumber &pcNewValue);
+        bool operator<=(CNumber &pcNewValue);
+        bool bIsZero();
     
     public:
         CNumber();
@@ -27,14 +34,8 @@ class CNumber {
         CNumber operator*(int iNewValue);
         CNumber operator-(int iNewValue);
         CNumber operator/(int iNewValue);
-        CNumber opposite();
-        bool operator>(CNumber &pcNewValue);
-        bool operator<=(CNumber &pcNewValue);
-        bool isZero();
-        std::string toString();
-        void ensureCapacity(int iRequiredLength);
-        void removeLeadingZeros();
-        void multiplyBy10ToPowerOf(int iExponent);
+        CNumber cOpposite();
+        std::string sToString();
         void printTable();
 };
 
