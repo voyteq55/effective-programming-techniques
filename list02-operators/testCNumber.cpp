@@ -2,6 +2,13 @@
 #include "CNumber.h"
 #include "testCNumber.h"
 
+void vTestExercise2Code() {
+    CNumber cNum0, cNum1;
+    cNum0 = 368;
+    cNum1 = 1567;
+    cNum0 = cNum1;
+}
+
 void vTestAddition() {
     std::cout << "\nADDITION TESTS:\n";
     CNumber n1, n2, n3, n4, n5, n6;

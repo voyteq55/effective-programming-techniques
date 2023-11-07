@@ -3,6 +3,7 @@
 #include "testCNumber.h"
 
 int main() {
+    vTestExercise2Code();
     vTestAddition();
     vTestSubtraction();
     vTestMultiplication();
