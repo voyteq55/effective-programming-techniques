@@ -289,21 +289,6 @@ void CNumber::vRemoveLeadingZeros() {
     }
 }
 
-void CNumber::printTable() {
-    std::cout << "[";
-    if (iLength > 0) {
-        std::cout << piNumber[iLength - 1];
-    }
-    for (int i = iLength - 2; i >= 0; i--) {
-        std::cout << ", " << piNumber[i];
-    }
-    std::cout << "]";
-    if (bIsNegative) {
-        std::cout << " (negative)";
-    }
-    std::cout << "\n";
-}
-
 void CNumber::vEnsureCapacity(int iRequiredLength) {
     if (iRequiredLength > iLength) {
         int iNewLength = iRequiredLength * 2;

@@ -36,7 +36,6 @@ class CNumber {
         CNumber operator/(int iNewValue);
         CNumber cOpposite();
         std::string sToString();
-        void printTable();
 };
 
 #endif
