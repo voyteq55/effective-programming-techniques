@@ -27,6 +27,19 @@ CNumber::CNumber(const CNumber &copy) {
     vMakeCopy(copy);
 }
 
+/* THIS IS WRONG */
+//CNumber CNumber::operator=(const CNumber &pcNewValue) {
+//    piNumber = pcNewValue.piNumber;
+//    iLength = pcNewValue.iLength;
+//    return *this;
+//}
+
+CNumber CNumber::operator=(const CNumber &pcNewValue) {
+    delete[] piNumber;
+    vMakeCopy(pcNewValue);
+    return *this;
+}
+
 CNumber CNumber::operator=(int iValue) {
     bIsNegative = iValue < 0 ? true : false;
     if (bIsNegative) {
@@ -49,10 +62,12 @@ CNumber CNumber::operator=(int iValue) {
 
 CNumber CNumber::operator+(CNumber &pcNewValue) {
     if (bIsNegative && !pcNewValue.bIsNegative) {
-        return pcNewValue.cOpposite() - *this;
+        CNumber cToSubtract = this->cOpposite();
+        return pcNewValue - cToSubtract;
     }
     if (!bIsNegative && pcNewValue.bIsNegative) {
-        return (*this).cOpposite() - pcNewValue;
+        CNumber cToSubtract = pcNewValue.cOpposite();
+        return *this - cToSubtract;
     }
     
     int iMaxLength = iLength > pcNewValue.iLength ? iLength : pcNewValue.iLength;
@@ -80,6 +95,12 @@ CNumber CNumber::operator+(CNumber &pcNewValue) {
         cResult.bIsNegative = true;
     }
     return cResult;
+}
+
+CNumber CNumber::operator+(int iNewValue) {
+    CNumber cNewValue;
+    cNewValue = iNewValue;
+    return *this + cNewValue;
 }
 
 CNumber CNumber::operator-(CNumber &pcNewValue) {
@@ -110,6 +131,12 @@ CNumber CNumber::operator-(CNumber &pcNewValue) {
     return cResult;
 }
 
+CNumber CNumber::operator-(int iNewValue) {
+    CNumber cNewValue;
+    cNewValue = iNewValue;
+    return *this - cNewValue;
+}
+
 CNumber CNumber::operator*(CNumber &pcNewValue) {
     CNumber cResult(iLength + pcNewValue.iLength);
     
@@ -133,6 +160,12 @@ CNumber CNumber::operator*(CNumber &pcNewValue) {
         cResult.bIsNegative = true;
     }
     return cResult;
+}
+
+CNumber CNumber::operator*(int iNewValue) {
+    CNumber cNewValue;
+    cNewValue = iNewValue;
+    return *this * cNewValue;
 }
 
 CNumber CNumber::operator/(CNumber &pcNewValue) {
@@ -162,12 +195,19 @@ CNumber CNumber::operator/(CNumber &pcNewValue) {
     return cResult;
 }
 
+CNumber CNumber::operator/(int iNewValue) {
+    CNumber cNewValue;
+    cNewValue = iNewValue;
+    return *this / cNewValue;
+}
+
 CNumber CNumber::cOpposite() {
     CNumber cOpposite = *this;
     cOpposite.bIsNegative = !cOpposite.bIsNegative;
     return cOpposite;
 }
 
+// this function compares ABSOLUTE VALUES!
 bool CNumber::operator>(CNumber &pcNewValue) {
     if (iLength > pcNewValue.iLength) return true;
     if (iLength < pcNewValue.iLength) return false;
@@ -178,8 +218,9 @@ bool CNumber::operator>(CNumber &pcNewValue) {
     return false;
 }
 
+// this function compares ABSOLUTE VALUES!
 bool CNumber::operator<=(CNumber &pcNewValue) {
-    return !operator>(pcNewValue);
+    return !(*this > pcNewValue);
 }
 
 bool CNumber::bIsZero() {
@@ -207,42 +248,29 @@ void CNumber::vMultiplyBy10ToPowerOf(int iExponent) {
     }
 }
 
-/* THIS IS WRONG */
-//CNumber CNumber::operator=(const CNumber &pcNewValue) {
-//    piNumber = pcNewValue.piNumber;
-//    iLength = pcNewValue.iLength;
-//    return *this;
-//}
-
-CNumber CNumber::operator=(const CNumber &pcNewValue) {
-    delete[] piNumber;
-    vMakeCopy(pcNewValue);
-    return *this;
-}
-
-void CNumber::vMakeCopy(const CNumber &reference) {
-    iLength = reference.iLength;
+void CNumber::vMakeCopy(const CNumber &pcReference) {
+    iLength = pcReference.iLength;
     piNumber = new int[iLength];
     for (int i = 0; i < iLength; i++) {
-        piNumber[i] = reference.piNumber[i];
+        piNumber[i] = pcReference.piNumber[i];
     }
-    bIsNegative = reference.bIsNegative;
+    bIsNegative = pcReference.bIsNegative;
 }
 
 std::string CNumber::sToString() {
-    std::ostringstream stream;
+    std::ostringstream sStream;
     if (bIsNegative) {
-        stream << "-";
+        sStream << "-";
     }
     
-    int index = iLength - 1;
-    while (index > 0) {
-        stream << piNumber[index];
-        index--;
+    int iIndex = iLength - 1;
+    while (iIndex > 0) {
+        sStream << piNumber[iIndex];
+        iIndex--;
     }
-    stream << piNumber[0];
+    sStream << piNumber[0];
     
-    return stream.str();
+    return sStream.str();
 }
 
 void CNumber::vRemoveLeadingZeros() {

@@ -52,7 +52,7 @@ int main() {
     std::cout << (cNum1 - n3).sToString() << "\n";
     
     std::cout << (cNum1 / n2).sToString() << "\n";
-    CNumber x1, x2, x3, x4, x5;
+    CNumber x1, x2, x3, x4, x5, x6, x7;
     x1 = -123;
     x2 = -2461;
     x3 = x2 / x1;
@@ -65,6 +65,12 @@ int main() {
     std::cout << x2.sToString() << " / " << x4.sToString() << " = " << x1.sToString() << "\n";
     x4 = x2 / x5;
     std::cout << x2.sToString() << " / " << x5.sToString() << " = " << x4.sToString() << "\n";
+    x6 = 1102;
+//    x4 = x4 * (-1);
+    x5 = x6 - x4;
+    x7 = x4 - x6;
+    std::cout << x6.sToString() << " - " << x4.sToString() << " = " << x5.sToString() << "\n";
+    std::cout << x4.sToString() << " - " << x6.sToString() << " = " << x7.sToString() << "\n";
     
     return 0;
 }

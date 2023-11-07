@@ -16,8 +16,8 @@ class CNumber {
         void vEnsureCapacity(int iRequiredLength);
         void vRemoveLeadingZeros();
         void vMultiplyBy10ToPowerOf(int iExponent);
-        bool operator>(CNumber &pcNewValue);
-        bool operator<=(CNumber &pcNewValue);
+        bool operator>(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
+        bool operator<=(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
         bool bIsZero();
     
     public:
