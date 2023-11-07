@@ -76,4 +76,5 @@ void vTestDivision() {
     std::cout << n5.sToString() << " * " << n4.sToString() << " = " << n6.sToString() << "\n";
     n7 = n6 / n4 / n4;
     std::cout << n5.sToString() << " / " << n4.sToString() << " / " << n4.sToString() << " = " << n7.sToString() << "\n";
+    std::cout << n7.sToString() << " / 0 = " << (n7 / 0).sToString() << "\n";
 }
