@@ -50,6 +50,22 @@ int main() {
     std::cout << (cNum1 - n4).toString() << "\n";
     std::cout << (n4.opposite() - cNum1).toString() << "\n";
     std::cout << (cNum1 - n3).toString() << "\n";
+    std::cout << (cNum1 - n3).toString() << "\n";
+    
+    std::cout << (cNum1 / n2).toString() << "\n";
+    CNumber x1, x2, x3, x4, x5;
+    x1 = -123;
+    x2 = -2461;
+    x3 = x2 / x1;
+    std::cout << x2.toString() << " / " << x1.toString() << " = " << x3.toString() << "\n";
+    x4 = x3 / x1;
+    std::cout << x3.toString() << " / " << x1.toString() << " = " << x4.toString() << "\n";
+    x5 = x1 / x3;
+    std::cout << x1.toString() << " / " << x3.toString() << " = " << x5.toString() << "\n";
+    x1 = x2 / x4;
+    std::cout << x2.toString() << " / " << x4.toString() << " = " << x1.toString() << "\n";
+    x4 = x2 / x5;
+    std::cout << x2.toString() << " / " << x5.toString() << " = " << x4.toString() << "\n";
     
     return 0;
 }

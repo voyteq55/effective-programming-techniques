@@ -135,6 +135,34 @@ CNumber CNumber::operator*(CNumber &pcNewValue) {
     return cResult;
 }
 
+// TODO check if pcNewValue is zero
+CNumber CNumber::operator/(CNumber &pcNewValue) {
+    if (pcNewValue.isZero()) return CNumber();
+    
+    CNumber cResult(iLength);
+    CNumber cDividedNumber, cDividingNumber;
+    cDividedNumber = 0;
+    cDividingNumber = (pcNewValue.bIsNegative) ? pcNewValue.opposite() : pcNewValue;
+    
+    for (int i = iLength - 1; i >= 0; i--) {
+        cDividedNumber.multiplyBy10ToPowerOf(1);
+        cDividedNumber.piNumber[0] = piNumber[i];
+        
+        int iDivisionPart = 0;
+        while (cDividingNumber <= cDividedNumber) {
+            cDividedNumber = cDividedNumber - cDividingNumber;
+            iDivisionPart++;
+        }
+        cResult.piNumber[i] = iDivisionPart;
+    }
+    
+    cResult.removeLeadingZeros();
+    if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
+        cResult.bIsNegative = true;
+    }
+    return cResult;
+}
+
 CNumber CNumber::opposite() {
     CNumber cOpposite = *this;
     cOpposite.bIsNegative = !cOpposite.bIsNegative;
@@ -144,15 +172,26 @@ CNumber CNumber::opposite() {
 bool CNumber::operator>(CNumber &pcNewValue) {
     if (iLength > pcNewValue.iLength) return true;
     if (iLength < pcNewValue.iLength) return false;
-    for (int i = iLength - 1; i >= 0; i++) {
+    for (int i = iLength - 1; i >= 0; i--) {
         if (piNumber[i] > pcNewValue.piNumber[i]) return true;
         if (piNumber[i] < pcNewValue.piNumber[i]) return false;
     }
     return false;
 }
 
+bool CNumber::operator<=(CNumber &pcNewValue) {
+    return !operator>(pcNewValue);
+}
+
+bool CNumber::isZero() {
+    for (int i = iLength - 1; i >= 0; i--) {
+        if (piNumber[i] != 0) return false;
+    }
+    return true;
+}
+
 void CNumber::multiplyBy10ToPowerOf(int iExponent) {
-    if (iExponent > 0) {
+    if ((iExponent > 0) && (piNumber[iLength - 1] != 0)) {
         int iNewLength = iLength + iExponent;
         int *piNewNumber = new int[iNewLength];
         

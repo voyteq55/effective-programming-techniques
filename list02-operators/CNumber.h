@@ -29,6 +29,8 @@ class CNumber {
         CNumber operator/(int iNewValue);
         CNumber opposite();
         bool operator>(CNumber &pcNewValue);
+        bool operator<=(CNumber &pcNewValue);
+        bool isZero();
         std::string toString();
         void ensureCapacity(int iRequiredLength);
         void removeLeadingZeros();
