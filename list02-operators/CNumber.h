@@ -16,8 +16,8 @@ class CNumber {
         void vEnsureCapacity(int iRequiredLength);
         void vRemoveLeadingZeros();
         void vMultiplyBy10ToPowerOf(int iExponent);
-        bool operator>(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
-        bool operator<=(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
+        bool bIsAbsoluteGreaterThan(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
+        bool bIsAbsoluteSmallerThanOrEqual(CNumber &pcNewValue); // this function compares ABSOLUTE VALUES!
         bool bIsZero();
     
     public:
@@ -34,6 +34,9 @@ class CNumber {
         CNumber operator*(int iNewValue);
         CNumber operator-(int iNewValue);
         CNumber operator/(int iNewValue);
+        CNumber operator<=(const CNumber &pcNewValue);
+        friend CNumber operator<=(int &iValue, const CNumber &pcNewValue);
+        operator int() const;
         CNumber cOpposite();
         std::string sToString();
 };

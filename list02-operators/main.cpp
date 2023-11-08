@@ -8,5 +8,8 @@ int main() {
     vTestSubtraction();
     vTestMultiplication();
     vTestDivision();
+    vTestModification();
     return 0;
 }
+
+

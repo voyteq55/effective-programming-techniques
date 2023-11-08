@@ -85,3 +85,12 @@ void vTestDivision() {
     std::cout << n5.sToString() << " / " << n4.sToString() << " / " << n4.sToString() << " = " << n7.sToString() << "\n";
     std::cout << n7.sToString() << " / 0 = " << (n7 / 0).sToString() << "\n";
 }
+
+void vTestModification() {
+    std::cout << "\nMODIFICATION TESTS:\n";
+    CNumber n, m, k;
+    n = 1234;
+    int x, y;
+    std::cout << "Result of: (y <= (k <= (x <= (m <= n)))): " << (y <= (k <= (x <= (m <= n)))) << "\n";
+    std::cout << "k: " << k.sToString() << ", x: " << x << ", m: " << m.sToString() << ", n: " << n.sToString() << "\n";
+}

@@ -6,5 +6,6 @@ void vTestAddition();
 void vTestSubtraction();
 void vTestMultiplication();
 void vTestDivision();
+void vTestModification();
 
 #endif

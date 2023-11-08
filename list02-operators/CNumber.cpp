@@ -107,7 +107,7 @@ CNumber CNumber::operator-(CNumber &pcNewValue) {
     if ((bIsNegative && !pcNewValue.bIsNegative) || (!bIsNegative && pcNewValue.bIsNegative)) {
         return pcNewValue.cOpposite() + *this;
     }
-    if (pcNewValue > *this) {
+    if (pcNewValue.bIsAbsoluteGreaterThan(*this)) {
         return (pcNewValue - *this).cOpposite();
     }
     
@@ -181,7 +181,7 @@ CNumber CNumber::operator/(CNumber &pcNewValue) {
         cDividedNumber.piNumber[0] = piNumber[i];
         
         int iDivisionPart = 0;
-        while (cDividingNumber <= cDividedNumber) {
+        while (cDividingNumber.bIsAbsoluteSmallerThanOrEqual(cDividedNumber)) {
             cDividedNumber = cDividedNumber - cDividingNumber;
             iDivisionPart++;
         }
@@ -201,6 +201,27 @@ CNumber CNumber::operator/(int iNewValue) {
     return *this / cNewValue;
 }
 
+CNumber CNumber::operator<=(const CNumber &pcNewValue) {
+    delete[] piNumber;
+    vMakeCopy(pcNewValue);
+    return *this;
+}
+
+CNumber operator<=(int &iValue, const CNumber &pcNewValue) {
+    iValue = pcNewValue;
+    return pcNewValue;
+}
+
+CNumber::operator int() const {
+    int iResult = 0;
+    int iPowerOf10 = 1;
+    for (int i = 0; i < iLength; i++) {
+        iResult += iPowerOf10 * piNumber[i];
+        iPowerOf10 *= BASE;
+    }
+    return iResult;
+}
+
 CNumber CNumber::cOpposite() {
     CNumber cOpposite = *this;
     cOpposite.bIsNegative = !cOpposite.bIsNegative;
@@ -208,7 +229,7 @@ CNumber CNumber::cOpposite() {
 }
 
 // this function compares ABSOLUTE VALUES!
-bool CNumber::operator>(CNumber &pcNewValue) {
+bool CNumber::bIsAbsoluteGreaterThan(CNumber &pcNewValue) {
     if (iLength > pcNewValue.iLength) return true;
     if (iLength < pcNewValue.iLength) return false;
     for (int i = iLength - 1; i >= 0; i--) {
@@ -219,8 +240,8 @@ bool CNumber::operator>(CNumber &pcNewValue) {
 }
 
 // this function compares ABSOLUTE VALUES!
-bool CNumber::operator<=(CNumber &pcNewValue) {
-    return !(*this > pcNewValue);
+bool CNumber::bIsAbsoluteSmallerThanOrEqual(CNumber &pcNewValue) {
+    return !(this->bIsAbsoluteGreaterThan(pcNewValue));
 }
 
 bool CNumber::bIsZero() {
