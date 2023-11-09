@@ -208,18 +208,14 @@ CNumber CNumber::operator<=(const CNumber &pcNewValue) {
 }
 
 CNumber operator<=(int &iValue, const CNumber &pcNewValue) {
-    iValue = pcNewValue;
-    return pcNewValue;
-}
-
-CNumber::operator int() const {
     int iResult = 0;
     int iPowerOf10 = 1;
-    for (int i = 0; i < iLength; i++) {
-        iResult += iPowerOf10 * piNumber[i];
+    for (int i = 0; i < pcNewValue.iLength; i++) {
+        iResult += iPowerOf10 * pcNewValue.piNumber[i];
         iPowerOf10 *= BASE;
     }
-    return iResult;
+    iValue = iResult;
+    return pcNewValue;
 }
 
 CNumber CNumber::cOpposite() {

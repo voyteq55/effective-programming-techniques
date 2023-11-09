@@ -36,7 +36,6 @@ class CNumber {
         CNumber operator/(int iNewValue);
         CNumber operator<=(const CNumber &pcNewValue);
         friend CNumber operator<=(int &iValue, const CNumber &pcNewValue);
-        operator int() const;
         CNumber cOpposite();
         std::string sToString();
 };

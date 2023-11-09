@@ -91,6 +91,6 @@ void vTestModification() {
     CNumber n, m, k;
     n = 1234;
     int x, y;
-    std::cout << "Result of: (y <= (k <= (x <= (m <= n)))): " << (y <= (k <= (x <= (m <= n)))) << "\n";
-    std::cout << "k: " << k.sToString() << ", x: " << x << ", m: " << m.sToString() << ", n: " << n.sToString() << "\n";
+    std::cout << "Result of: (y <= (k <= (x <= (m <= n)))): " << (y <= (k <= (x <= (m <= n)))).sToString() << "\n";
+    std::cout << "y: " << y << ", k: " << k.sToString() << ", x: " << x << ", m: " << m.sToString() << ", n: " << n.sToString() << "\n";
 }
