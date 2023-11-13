@@ -89,7 +89,7 @@ void vTestDivision() {
 void vTestModification() {
     std::cout << "\nMODIFICATION TESTS:\n";
     CNumber n, m, k;
-    n = 1234;
+    n = -1234;
     int x, y;
     std::cout << "Result of: (y <= (k <= (x <= (m <= n)))): " << (y <= (k <= (x <= (m <= n)))).sToString() << "\n";
     std::cout << "y: " << y << ", k: " << k.sToString() << ", x: " << x << ", m: " << m.sToString() << ", n: " << n.sToString() << "\n";

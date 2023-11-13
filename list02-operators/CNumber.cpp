@@ -214,6 +214,10 @@ CNumber operator<=(int &iValue, const CNumber &pcNewValue) {
         iResult += iPowerOf10 * pcNewValue.piNumber[i];
         iPowerOf10 *= BASE;
     }
+    if (pcNewValue.bIsNegative) {
+        iResult = -iResult;
+    }
+    
     iValue = iResult;
     return pcNewValue;
 }
