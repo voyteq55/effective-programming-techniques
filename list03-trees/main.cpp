@@ -1,7 +1,12 @@
 #include <iostream>
-#include "Node.h"
+#include "Tree.h"
 
 int main() {
-    std::cout << "";
+    Tree testTree;
+    std::deque<std::string> myUserArgs;
+    myUserArgs = {"+", "+", "+"};
+    testTree.enterNewTree(myUserArgs);
+    
+    std::cout << testTree.toPrefixNotation() << "\n";
     return 0;
 }

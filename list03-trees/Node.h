@@ -2,6 +2,8 @@
 #define NODE_H
 
 #include <string>
+#include <deque>
+#include "Valuation.h"
 
 class Node {
 public:
@@ -9,10 +11,12 @@ public:
     
     virtual ~Node();
     
-    virtual double evaluate() = 0;
-    std::string toString();
+    virtual double evaluate(const Valuation& valuation) const = 0;
+    virtual void createChildren(std::deque<std::string>& userArgs);
+    virtual std::string toString() const;
+    virtual std::string toStringWithChildren() const;
     
-private:
+protected:
     std::string displayLabel;
 };
 
