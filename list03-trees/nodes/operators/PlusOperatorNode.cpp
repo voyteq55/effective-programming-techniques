@@ -1,5 +1,4 @@
 #include "PlusOperatorNode.h"
-#include "OperatorConstants.h"
 #include "Valuation.h"
 
 PlusOperatorNode::PlusOperatorNode() {

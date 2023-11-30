@@ -3,7 +3,6 @@
 #include "ConstantNode.h"
 #include "VariableNode.h"
 #include "PlusOperatorNode.h"
-#include "OperatorConstants.h"
 #include <string>
 
 Node* NodeCreator::allocateAndReturnPointer(std::string userInput) {
