@@ -52,9 +52,11 @@ int main() {
         } else if (firstWord == "print") {
             std::cout << tree.toPrefixNotation() << "\n";
         } else if (firstWord == "comp") {
-            std::cout << tree.evaluate(valuation) << "\n";
+            if (valuation.setValuation(wordsDeque, tree.getVariableNamesSet())) {
+                std::cout << tree.evaluate(valuation) << "\n";
+            }
         } else if (firstWord == "vars") {
-            std::cout << tree.getVariableNames() << "\n";
+            std::cout << tree.getVariableNamesString() << "\n";
         } else if (firstWord == "exit") {
             isProgramRunning = false;
         }

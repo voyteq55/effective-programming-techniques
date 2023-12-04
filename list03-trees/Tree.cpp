@@ -30,13 +30,17 @@ double Tree::evaluate(const Valuation &valuation) {
     return rootNode->evaluate(valuation);
 }
 
-std::string Tree::getVariableNames() {
+std::string Tree::getVariableNamesString() {
     std::string allVariableNames;
     for (const std::string& name : *variableNames) {
         allVariableNames += name;
-        allVariableNames += ", ";
+        allVariableNames += " ";
     }
     return allVariableNames;
+}
+
+std::set<std::string>* Tree::getVariableNamesSet() const {
+    return variableNames;
 }
 
 void Tree::deallocateMemory() {

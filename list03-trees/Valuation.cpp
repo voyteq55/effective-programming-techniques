@@ -1,10 +1,34 @@
 #include "Valuation.h"
+#include "NodeCreator.h"
 #include <string>
+#include <set>
 
 Valuation::Valuation() {
     
 }
 
+//returns true if successful, returns false if wrong input (arg number or not digits)
+bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames) {
+    variableValues.clear();
+    if (userArgs.size() != variableNames->size()) {
+        return false;
+    }
+    
+    for (const std::string& variableName : *variableNames) {
+        std::string userArg = userArgs.front();
+        userArgs.pop_front();
+        if (!NodeCreator::isConstant(userArg)) {
+            return false;
+        }
+        double variableValue = std::stod(userArg);
+        variableValues.insert(std::make_pair(variableName, variableValue));
+    }
+    return true;
+}
+
 double Valuation::evaluateVariable(std::string variableName) const {
-    return 1234;
+    if (variableValues.find(variableName) != variableValues.end()) {
+        return variableValues.at(variableName);
+    }
+    return 0;
 }
