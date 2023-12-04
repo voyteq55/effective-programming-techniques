@@ -23,6 +23,7 @@ private:
     Node* rootNode;
     std::set<std::string>* variableNames;
     
+    void joinNode(Node *otherRootNode);
     void deallocateMemory();
 };
 

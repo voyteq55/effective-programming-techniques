@@ -12,6 +12,10 @@ void VariableNode::createChildren(std::deque<std::string>& userArgs, std::set<st
     variableNames->insert(variableName);
 }
 
+void VariableNode::addVariableNames(std::set<std::string> *variableNames) const {
+    variableNames->insert(variableName);
+}
+
 std::string VariableNode::toString() const {
     return variableName;
 }

@@ -1,7 +1,9 @@
 #include "OperatorNode.h"
 #include "NodeCreator.h"
 
-OperatorNode::OperatorNode(): numberOfArguments(0) {}
+OperatorNode::OperatorNode() {
+    numberOfArguments = 0;
+}
 
 OperatorNode::~OperatorNode() {
     for (int i = 0; i < numberOfArguments; i++) {
@@ -23,6 +25,12 @@ void OperatorNode::createChildren(std::deque<std::string> &userArgs, std::set<st
     }
 }
 
+void OperatorNode::addVariableNames(std::set<std::string> *variableNames) const {
+    for (int i = 0; i < numberOfArguments; i++) {
+        childNodes[i]->addVariableNames(variableNames);
+    }
+}
+
 std::string OperatorNode::toString() const {
     return displayLabel;
 }
@@ -34,4 +42,14 @@ std::string OperatorNode::toStringWithChildren() const {
         stringToReturn += childNodes[i]->toStringWithChildren();
     }
     return stringToReturn;
+}
+
+void OperatorNode::joinNode(Node *nodeToJoin) {
+    Node *firstChild = childNodes[0];
+    if (firstChild->hasChildren()) {
+        firstChild->joinNode(nodeToJoin);
+    } else {
+        delete firstChild;
+        childNodes[0] = nodeToJoin;
+    }
 }

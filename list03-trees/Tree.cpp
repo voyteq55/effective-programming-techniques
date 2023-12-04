@@ -30,6 +30,19 @@ double Tree::evaluate(const Valuation &valuation) {
     return rootNode->evaluate(valuation);
 }
 
+void Tree::joinTree(std::deque<std::string> &userArgs) {
+    Node *newRootNode;
+    std::string nextArg = userArgs.front();
+    userArgs.pop_front();
+    newRootNode = NodeCreator::allocateAndReturnPointer(nextArg);
+    newRootNode->createChildren(userArgs, variableNames);
+    
+    joinNode(newRootNode);
+    
+    variableNames->clear();
+    rootNode->addVariableNames(variableNames);
+}
+
 std::string Tree::getVariableNamesString() {
     std::string allVariableNames;
     for (const std::string& name : *variableNames) {
@@ -41,6 +54,17 @@ std::string Tree::getVariableNamesString() {
 
 std::set<std::string>* Tree::getVariableNamesSet() const {
     return variableNames;
+}
+
+void Tree::joinNode(Node *otherRootNode) {
+    if (rootNode == nullptr) {
+        rootNode = otherRootNode;
+    } else if (!rootNode->hasChildren()) {
+        delete rootNode;
+        rootNode = otherRootNode;
+    } else {
+        rootNode->joinNode(otherRootNode);
+    }
 }
 
 void Tree::deallocateMemory() {

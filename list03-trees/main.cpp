@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "VariableNode.h"
 #include "NodeCreator.h"
+#include "PlusOperatorNode.h"
 #include "Valuation.h"
 
 void tests() {
@@ -22,6 +23,31 @@ void tests() {
     Node* n3 = NodeCreator::allocateAndReturnPointer("+");
     Node* n4 = NodeCreator::allocateAndReturnPointer("x");
     Node* n5 = NodeCreator::allocateAndReturnPointer("y&$%@z");
+
+    PlusOperatorNode p1;
+    std::cout << "plus has children: " << p1.hasChildren() << "\n";
+    std::cout << "526 has children: " << n1->hasChildren() << "\n";
+    
+    Tree testTree2;
+    std::deque<std::string> args = {"*", "+", "a", "10", "/", "b", "*", "c", "3"};
+    testTree2.enterNewTree(args);
+    std::cout << "drzewo: " << testTree2.toPrefixNotation() << "\n";
+    std::cout << "vars: " << testTree2.getVariableNamesString() << "\n";
+    Valuation v2;
+    std::deque<std::string> valArgs = {"3", "14", "2"};
+    v2.setValuation(valArgs, testTree2.getVariableNamesSet());
+    std::cout << "wynik dla (3, 14, 2), powinien byc 30.(3): " << testTree2.evaluate(v2) << "\n";
+    
+    Tree joinedTree;
+    std::deque<std::string> joinedTreeArgs = {"-", "+", "x", "77", "99"};
+//    joinedTree.enterNewTree(joinedTreeArgs);
+//    std::cout << "drzewo dodawane: " << joinedTree.toPrefixNotation() << "\n";
+    
+//    joinedTreeArgs = {"-", "sin", "x", "77"};
+    testTree2.joinTree(joinedTreeArgs);
+    std::cout << "drzewo po dodaniu: " << testTree2.toPrefixNotation() << "\n";
+    std::cout << "vars po dodaniu: " << testTree2.getVariableNamesString() << "\n";
+    
 }
 
 int main() {
@@ -57,6 +83,8 @@ int main() {
             }
         } else if (firstWord == "vars") {
             std::cout << tree.getVariableNamesString() << "\n";
+        } else if (firstWord == "join") {
+            tree.joinTree(wordsDeque);
         } else if (firstWord == "exit") {
             isProgramRunning = false;
         }
