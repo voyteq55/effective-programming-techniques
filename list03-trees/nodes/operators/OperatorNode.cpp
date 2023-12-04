@@ -10,13 +10,13 @@ OperatorNode::~OperatorNode() {
     delete[] childNodes;
 }
 
-void OperatorNode::createChildren(std::deque<std::string> &userArgs) {
+void OperatorNode::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames) {
     for (int i = 0; i < numberOfArguments; i++) {
         if (!userArgs.empty()) {
             std::string argString = userArgs.front();
             userArgs.pop_front();
             childNodes[i] = NodeCreator::allocateAndReturnPointer(argString);
-            childNodes[i]->createChildren(userArgs);
+            childNodes[i]->createChildren(userArgs, variableNames);
         } else {
             childNodes[i] = NodeCreator::allocateDefaultConstantNode();
         }

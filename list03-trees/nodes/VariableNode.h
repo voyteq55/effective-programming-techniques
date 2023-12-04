@@ -10,6 +10,7 @@ public:
     VariableNode(const std::string variableName);
     
     double evaluate(const Valuation &valuation) const override;
+    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames) override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
     

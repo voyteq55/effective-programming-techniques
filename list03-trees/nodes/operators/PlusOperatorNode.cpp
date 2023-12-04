@@ -1,5 +1,4 @@
 #include "PlusOperatorNode.h"
-#include "Valuation.h"
 
 PlusOperatorNode::PlusOperatorNode() {
     displayLabel = PLUS_OPERATOR_DISPLAY_LABEL;
@@ -10,4 +9,3 @@ PlusOperatorNode::PlusOperatorNode() {
 double PlusOperatorNode::evaluate(const Valuation &valuation) const {
     return childNodes[0]->evaluate(valuation) + childNodes[1]->evaluate(valuation);
 }
-

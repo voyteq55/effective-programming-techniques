@@ -5,8 +5,14 @@
 
 class NodeCreator {
 public:
+    static void extracted(std::string &userInput);
+    
     static Node* allocateAndReturnPointer(std::string userInput);
     static Node* allocateDefaultConstantNode();
+
+private:
+    static bool isConstant(const std::string userInput);
+    static void removeInvalidCharacters(std::string& userInput);
 };
 
 #endif

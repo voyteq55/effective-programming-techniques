@@ -8,10 +8,10 @@ Node::Node() {
 
 Node::~Node() {}
 
-void Node::createChildren(std::deque<std::string> &userArgs) {}
+void Node::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames) {}
 
 std::string Node::toStringWithChildren() const {
-    return "";
+    return displayLabel;
 }
 
 std::string Node::toString() const {

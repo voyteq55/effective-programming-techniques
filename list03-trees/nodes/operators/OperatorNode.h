@@ -9,7 +9,7 @@ public:
     
     virtual ~OperatorNode();
     
-    void createChildren(std::deque<std::string>& userArgs) override;
+    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames) override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
     

@@ -2,7 +2,9 @@
 
 ConstantNode::ConstantNode(): constantValue(DEFAULT_CONSTANT_VALUE) {}
 
-ConstantNode::ConstantNode(double value): constantValue(value) {}
+ConstantNode::ConstantNode(double value): constantValue(value) {
+//    displayLabel = std::to_string(constantValue);
+}
 
 double ConstantNode::evaluate(const Valuation &valuation) const {
     return constantValue;
