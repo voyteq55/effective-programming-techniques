@@ -5,13 +5,6 @@ OperatorNode::OperatorNode() {
     numberOfArguments = 0;
 }
 
-//OperatorNode::~OperatorNode() {
-//    for (int i = 0; i < numberOfArguments; i++) {
-//        delete childNodes[i];
-//    }
-//    delete[] childNodes;
-//}
-
 void OperatorNode::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames) {
     for (int i = 0; i < numberOfArguments; i++) {
         if (!userArgs.empty()) {

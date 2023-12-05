@@ -8,17 +8,20 @@ Tree::Tree(): rootNode(nullptr) {
 }
 
 Tree::Tree(const Tree &copy) {
-    rootNode = copy.rootNode->clone();
-    variableNames = new std::set<std::string>;
-    *variableNames = *(copy.variableNames);
+    makeCopy(copy);
 }
 
 Tree& Tree::operator=(const Tree &other) {
-//    deallocateMemory();
-    rootNode = other.rootNode->clone();
-//    variableNames = new std::set<std::string>;
-    *variableNames = *(other.variableNames);
+    if (this != &other) {
+        deallocateMemory();
+        makeCopy(other);
+    }
     return *this;
+}
+
+void Tree::makeCopy(const Tree &other) {
+    rootNode = other.rootNode->clone();
+    variableNames = new std::set<std::string>(*other.variableNames);
 }
 
 Tree::~Tree() {
@@ -27,6 +30,9 @@ Tree::~Tree() {
 
 void Tree::enterNewTree(std::deque<std::string> &userArgs) {
     if (userArgs.empty()) {
+        deallocateMemory();
+        rootNode = nullptr;
+        variableNames = new std::set<std::string>;
         return;
     }
     deallocateMemory();
@@ -42,7 +48,7 @@ std::string Tree::toPrefixNotation() {
     if (rootNode != nullptr) {
         return rootNode->toStringWithChildren();
     }
-    return "";
+    return EMPTY_TREE_REPRESENTATION;
 }
 
 double Tree::evaluate(const Valuation &valuation) {
@@ -67,15 +73,15 @@ void Tree::joinTree(std::deque<std::string> &userArgs) {
 }
 
 Tree Tree::operator+(const Tree &other) const {
-    Tree resultTree = *this;
-    Node* newRootNode = nullptr;
-    newRootNode = other.rootNode->clone();
+    Tree resultTree(*this);
+//    Node* newRootNode = other.rootNode->clone();
+//    
+//    //do wydzielenia
+//    resultTree.joinNode(newRootNode);
+//    
+//    resultTree.variableNames->clear();
+//    resultTree.rootNode->addVariableNames(resultTree.variableNames);
     
-    //do wydzielenia
-    resultTree.joinNode(newRootNode);
-    
-    resultTree.variableNames->clear();
-    resultTree.rootNode->addVariableNames(resultTree.variableNames);
     
     return resultTree;
 }

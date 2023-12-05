@@ -9,26 +9,20 @@ Node::Node() {
 }
 
 Node::Node(const Node &copy) {
-    displayLabel = copy.displayLabel;
-    numberOfArguments = copy.numberOfArguments;
-    if (copy.childNodes == nullptr) {
-        childNodes = nullptr;
-    } else {
-        childNodes = new Node*[numberOfArguments];
-        for (int i = 0; i < numberOfArguments; i++) {
-            childNodes[i] = copy.childNodes[i]->clone();
-        }
-    }
+    makeCopy(copy);
 }
 
 Node& Node::operator=(const Node &other) {
-    if (childNodes != nullptr) {
-        for (int i = 0; i < numberOfArguments; i++) {
-            delete childNodes[i];
+    if (this != &other) {
+        if (childNodes != nullptr) {
+            deallocateMemory();
         }
-        delete[] childNodes;
+        makeCopy(other);
     }
-    
+    return *this;
+}
+
+void Node::makeCopy(const Node &other) {
     displayLabel = other.displayLabel;
     numberOfArguments = other.numberOfArguments;
     if (other.childNodes == nullptr) {
@@ -36,31 +30,25 @@ Node& Node::operator=(const Node &other) {
     } else {
         childNodes = new Node*[numberOfArguments];
         for (int i = 0; i < numberOfArguments; i++) {
-//            childNodes[i] = new Node;
             childNodes[i] = other.childNodes[i]->clone();
         }
     }
-    
-    return *this;
 }
 
 Node::~Node() {
-    for (int i = 0; i < numberOfArguments; i++) {
-        delete childNodes[i];
-    }
-    delete[] childNodes;
+    deallocateMemory();
 }
 
 void Node::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames) {}
 
 void Node::addVariableNames(std::set<std::string> *variableNames) const {}
 
-std::string Node::toStringWithChildren() const {
+std::string Node::toString() const {
     return displayLabel;
 }
 
-std::string Node::toString() const {
-    return displayLabel;
+std::string Node::toStringWithChildren() const {
+    return toString();
 }
 
 void Node::joinNode(Node *nodeToJoin) {}
@@ -71,4 +59,11 @@ bool Node::hasChildren() {
 
 void Node::setChildNode(int index, Node *node) {
     childNodes[index] = node;
+}
+
+void Node::deallocateMemory() {
+    for (int i = 0; i < numberOfArguments; i++) {
+        delete childNodes[i];
+    }
+    delete[] childNodes;
 }

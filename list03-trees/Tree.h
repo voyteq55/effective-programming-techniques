@@ -6,12 +6,17 @@
 #include <deque>
 #include <set>
 
+const std::string EMPTY_TREE_REPRESENTATION = "<empty tree>";
+
 class Tree {
 public:
     Tree();
     Tree(const Tree &copy);
     
     Tree& operator=(const Tree &other);
+    void makeCopy(const Tree &other);
+    
+    Tree operator+(const Tree &other) const;
     
     ~Tree();
     
@@ -22,11 +27,9 @@ public:
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
     
-    Tree operator+(const Tree &other) const;
-    
 private:
-    Node* rootNode;
-    std::set<std::string>* variableNames;
+    Node *rootNode;
+    std::set<std::string> *variableNames;
     
     void joinNode(Node *otherRootNode);
     void deallocateMemory();

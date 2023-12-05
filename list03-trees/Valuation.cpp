@@ -3,11 +3,8 @@
 #include <string>
 #include <set>
 
-Valuation::Valuation() {
-    
-}
+Valuation::Valuation() {}
 
-//returns true if successful, returns false if wrong input (arg number or not digits)
 bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames) {
     variableValues.clear();
     if (userArgs.size() != variableNames->size()) {

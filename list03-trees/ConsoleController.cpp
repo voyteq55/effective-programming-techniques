@@ -44,7 +44,7 @@ std::string ConsoleController::executeCommand(std::string commandName, std::dequ
         isProgramRunning = false;
         return EXIT_MESSAGE;
     }
-    return INVALID_ARGUMENT_MESSAGE + commandName;
+    return INVALID_COMMAND_MESSAGE + commandName;
 }
 
 std::deque<std::string> ConsoleController::getInputDeque() {

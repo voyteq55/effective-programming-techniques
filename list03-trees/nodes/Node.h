@@ -13,6 +13,7 @@ public:
     
     Node& operator=(const Node &other);
     virtual Node* clone() const = 0;
+    void makeCopy(const Node &other);
     
     virtual ~Node();
     
@@ -28,7 +29,9 @@ public:
 protected:
     std::string displayLabel;
     int numberOfArguments;
-    Node** childNodes;
+    Node **childNodes;
+    
+    void deallocateMemory();
     
 };
 

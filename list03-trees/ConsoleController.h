@@ -13,7 +13,7 @@ const std::string EXIT_COMMAND = "exit";
 
 const std::string COMMAND_START = "> ";
 const std::string START_MESSAGE = "Enter a command ('enter <formula', 'vars', 'print', 'comp <var1> ... <varn>', 'join <formula>')";
-const std::string INVALID_ARGUMENT_MESSAGE = "Invalid argument: ";
+const std::string INVALID_COMMAND_MESSAGE = "Invalid command name: ";
 const std::string ENTER_TREE_MESSAGE = "Tree entered: ";
 const std::string EVAL_FAIL_MESSAGE = "Evaluation unsuccessful";
 const std::string JOIN_TREE_MESSAGE = "Tree after joining: ";

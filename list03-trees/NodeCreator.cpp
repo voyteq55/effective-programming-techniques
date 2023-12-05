@@ -7,6 +7,7 @@
 #include "MultiplyOperatorNode.h"
 #include "DivideOperatorNode.h"
 #include "SinusOperatorNode.h"
+#include "CosinusOperatorNode.h"
 #include <string>
 
 Node* NodeCreator::allocateAndReturnPointer(std::string userInput) {
@@ -24,6 +25,9 @@ Node* NodeCreator::allocateAndReturnPointer(std::string userInput) {
     }
     if (userInput == SINUS_OPERATOR_DISPLAY_LABEL) {
         return new SinusOperatorNode();
+    }
+    if (userInput == COSINUS_OPERATOR_DISPLAY_LABEL) {
+        return new CosinusOperatorNode();
     }
     if (isConstant(userInput)) {
         int constantValue = std::stoi(userInput);
