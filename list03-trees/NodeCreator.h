@@ -3,6 +3,8 @@
 
 #include "Node.h"
 
+const std::string DEFAULT_VARIABLE_FIRST_LETTER = "A";
+
 class NodeCreator {
 public:
     static Node* allocateAndReturnPointer(std::string userInput);
@@ -11,6 +13,7 @@ public:
 
 private:
     static void removeInvalidCharacters(std::string& userInput);
+    
 };
 
 #endif

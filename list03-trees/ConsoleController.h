@@ -10,11 +10,15 @@ const std::string COMP_COMMAND = "comp";
 const std::string VARS_COMMAND = "vars";
 const std::string JOIN_COMMAND = "join";
 const std::string EXIT_COMMAND = "exit";
+const std::string EMPTY_COMMAND = "<no command>";
 
 const std::string COMMAND_START = "> ";
 const std::string START_MESSAGE = "Enter a command ('enter <formula', 'vars', 'print', 'comp <var1> ... <varn>', 'join <formula>')";
 const std::string INVALID_COMMAND_MESSAGE = "Invalid command name: ";
 const std::string ENTER_TREE_MESSAGE = "Tree entered: ";
+const std::string PRINT_TREE_MESSAGE = "Tree: ";
+const std::string VARS_MESSAGE = "Variable names: ";
+const std::string EVAL_MESSAGE = "Result: ";
 const std::string EVAL_FAIL_MESSAGE = "Evaluation unsuccessful";
 const std::string JOIN_TREE_MESSAGE = "Tree after joining: ";
 const std::string EXIT_MESSAGE = "Program finished";

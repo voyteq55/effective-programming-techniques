@@ -30,14 +30,14 @@ Node* NodeCreator::allocateAndReturnPointer(std::string userInput) {
         return new CosinusOperatorNode();
     }
     if (isConstant(userInput)) {
-        int constantValue = std::stoi(userInput);
+        double constantValue = std::stod(userInput);
         return new ConstantNode(constantValue);
     }
     
     removeInvalidCharacters(userInput);
     
     if (isConstant(userInput)) {
-        userInput = "A" + userInput;
+        userInput = DEFAULT_VARIABLE_FIRST_LETTER + userInput;
     }
     
     return new VariableNode(userInput);

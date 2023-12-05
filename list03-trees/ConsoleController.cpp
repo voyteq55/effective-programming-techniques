@@ -11,10 +11,15 @@ void ConsoleController::start() {
     isProgramRunning = true;
     while (isProgramRunning) {
         std::cout << COMMAND_START;
+        std::string commandName;
         std::deque<std::string> inputDeque = getInputDeque();
-        std::string firstWord = inputDeque.front();
-        inputDeque.pop_front();
-        std::string outputMessage = executeCommand(firstWord, inputDeque);
+        if (inputDeque.empty()) {
+            commandName = EMPTY_COMMAND;
+        } else {
+            commandName = inputDeque.front();
+            inputDeque.pop_front();
+        }
+        std::string outputMessage = executeCommand(commandName, inputDeque);
         std::cout << outputMessage << "\n";
     }
 }
@@ -25,16 +30,16 @@ std::string ConsoleController::executeCommand(std::string commandName, std::dequ
         return ENTER_TREE_MESSAGE + tree.toPrefixNotation();
     }
     if (commandName == PRINT_COMMAND) {
-        return tree.toPrefixNotation();
+        return PRINT_TREE_MESSAGE + tree.toPrefixNotation();
     }
     if (commandName == COMP_COMMAND) {
         if (valuation.setValuation(userArgs, tree.getVariableNamesSet())) {
-            return std::to_string(tree.evaluate(valuation));
+            return EVAL_MESSAGE + std::to_string(tree.evaluate(valuation));
         }
         return EVAL_FAIL_MESSAGE;
     }
     if (commandName == VARS_COMMAND) {
-        return tree.getVariableNamesString();
+        return VARS_MESSAGE + tree.getVariableNamesString();
     }
     if (commandName == JOIN_COMMAND) {
         tree.joinTree(userArgs);
