@@ -11,6 +11,8 @@ class DivideOperatorNode: public OperatorNode {
 public:
     DivideOperatorNode();
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
 };
 

@@ -7,6 +7,14 @@ SinusOperatorNode::SinusOperatorNode() {
     childNodes = new Node*[numberOfArguments];
 }
 
+Node* SinusOperatorNode::clone() const {
+    Node* newNode = new SinusOperatorNode();
+    for (int i = 0; i < numberOfArguments; i++) {
+        newNode->setChildNode(i, childNodes[i]->clone());
+    }
+    return newNode;
+}
+
 double SinusOperatorNode::evaluate(const Valuation &valuation) const {
     return std::sin(childNodes[0]->evaluate(valuation) * M_PI / 180.0) ;
 }

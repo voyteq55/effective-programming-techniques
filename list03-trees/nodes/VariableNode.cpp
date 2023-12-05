@@ -4,6 +4,10 @@ VariableNode::VariableNode(): variableName() {}
 
 VariableNode::VariableNode(const std::string variableName): variableName(variableName) {}
 
+Node* VariableNode::clone() const {
+    return new VariableNode(variableName);
+}
+
 double VariableNode::evaluate(const Valuation &valuation) const {
     return valuation.evaluateVariable(variableName);
 }

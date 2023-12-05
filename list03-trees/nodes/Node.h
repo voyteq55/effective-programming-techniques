@@ -9,6 +9,10 @@
 class Node {
 public:
     Node();
+    Node(const Node &copy);
+    
+    Node& operator=(const Node &other);
+    virtual Node* clone() const = 0;
     
     virtual ~Node();
     
@@ -19,6 +23,7 @@ public:
     virtual std::string toStringWithChildren() const;
     virtual void joinNode(Node *nodeToJoin);
     bool hasChildren();
+    void setChildNode(int index, Node *node);
     
 protected:
     std::string displayLabel;

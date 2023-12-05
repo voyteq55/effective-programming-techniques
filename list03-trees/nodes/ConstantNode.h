@@ -12,6 +12,8 @@ public:
     ConstantNode();
     ConstantNode(double value);
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;

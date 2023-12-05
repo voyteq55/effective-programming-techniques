@@ -11,6 +11,8 @@ class SinusOperatorNode: public OperatorNode {
 public:
     SinusOperatorNode();
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
 };
 

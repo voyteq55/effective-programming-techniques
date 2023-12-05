@@ -6,6 +6,10 @@ ConstantNode::ConstantNode(double value): constantValue(value) {
 //    displayLabel = std::to_string(constantValue);
 }
 
+Node* ConstantNode::clone() const {
+    return new ConstantNode(constantValue);
+}
+
 double ConstantNode::evaluate(const Valuation &valuation) const {
     return constantValue;
 }

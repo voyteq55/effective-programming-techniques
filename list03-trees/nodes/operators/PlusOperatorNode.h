@@ -11,6 +11,8 @@ class PlusOperatorNode: public OperatorNode {
 public:
     PlusOperatorNode();
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
 };
 

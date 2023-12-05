@@ -48,6 +48,24 @@ void tests() {
     std::cout << "drzewo po dodaniu: " << testTree2.toPrefixNotation() << "\n";
     std::cout << "vars po dodaniu: " << testTree2.getVariableNamesString() << "\n";
     
+    
+    Tree testAdd1, testAdd2, testResult;
+    std::deque<std::string> testAdd1Args = {"*", "var", "-", "5", "abc"};
+    std::deque<std::string> testAdd2Args = {"+", "newVar"};
+    testAdd1.enterNewTree(testAdd1Args);
+    testAdd2.enterNewTree(testAdd2Args);
+    std::cout << "drzewo 1 przed: " << testAdd1.toPrefixNotation() << ", args: " << testAdd1.getVariableNamesString() << "\n";
+    std::cout << "drzewo 2 przed: " << testAdd2.toPrefixNotation() << ", args: " << testAdd2.getVariableNamesString()<< "\n";
+    std::cout << "drzewo R przed: " << testResult.toPrefixNotation() << ", args: " << testResult.getVariableNamesString()<< "\n";
+    
+    std::deque<std::string> testResultArgs = {"/"};
+    testResult.enterNewTree(testResultArgs);
+    testResult = testAdd1 + testAdd2;
+    
+    std::cout << "drzewo 1 po: " << testAdd1.toPrefixNotation() << ", args: " << testAdd1.getVariableNamesString() << "\n";
+    std::cout << "drzewo 2 po: " << testAdd2.toPrefixNotation() << ", args: " << testAdd2.getVariableNamesString()<< "\n";
+    std::cout << "drzewo 1 + drzewo 2 po: " << testResult.toPrefixNotation() << ", args: " << testResult.getVariableNamesString()<< "\n";
+    
 }
 
 int main() {

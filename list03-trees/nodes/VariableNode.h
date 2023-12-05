@@ -9,6 +9,8 @@ public:
     VariableNode();
     VariableNode(const std::string variableName);
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
     void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames) override;
     void addVariableNames(std::set<std::string>* variableNames) const override;

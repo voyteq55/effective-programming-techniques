@@ -1,8 +1,24 @@
 #include "Tree.h"
 #include "NodeCreator.h"
 
+#include <iostream>
+
 Tree::Tree(): rootNode(nullptr) {
     variableNames = new std::set<std::string>;
+}
+
+Tree::Tree(const Tree &copy) {
+    rootNode = copy.rootNode->clone();
+    variableNames = new std::set<std::string>;
+    *variableNames = *(copy.variableNames);
+}
+
+Tree& Tree::operator=(const Tree &other) {
+//    deallocateMemory();
+    rootNode = other.rootNode->clone();
+//    variableNames = new std::set<std::string>;
+    *variableNames = *(other.variableNames);
+    return *this;
 }
 
 Tree::~Tree() {
@@ -37,10 +53,26 @@ void Tree::joinTree(std::deque<std::string> &userArgs) {
     newRootNode = NodeCreator::allocateAndReturnPointer(nextArg);
     newRootNode->createChildren(userArgs, variableNames);
     
+    
     joinNode(newRootNode);
+    
     
     variableNames->clear();
     rootNode->addVariableNames(variableNames);
+}
+
+Tree Tree::operator+(const Tree &other) const {
+    Tree resultTree = *this;
+    Node* newRootNode = nullptr;
+    newRootNode = other.rootNode->clone();
+    
+    //do wydzielenia
+    resultTree.joinNode(newRootNode);
+    
+    resultTree.variableNames->clear();
+    resultTree.rootNode->addVariableNames(resultTree.variableNames);
+    
+    return resultTree;
 }
 
 std::string Tree::getVariableNamesString() {

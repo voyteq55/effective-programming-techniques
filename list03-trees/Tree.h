@@ -9,6 +9,9 @@
 class Tree {
 public:
     Tree();
+    Tree(const Tree &copy);
+    
+    Tree& operator=(const Tree &other);
     
     ~Tree();
     
@@ -18,6 +21,8 @@ public:
     void joinTree(std::deque<std::string>& userArgs);
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
+    
+    Tree operator+(const Tree &other) const;
     
 private:
     Node* rootNode;

@@ -11,6 +11,8 @@ class MultiplyOperatorNode: public OperatorNode {
 public:
     MultiplyOperatorNode();
     
+    Node* clone() const override;
+    
     double evaluate(const Valuation &valuation) const override;
 };
 
