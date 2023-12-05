@@ -12,7 +12,7 @@ double VariableNode::evaluate(const Valuation &valuation) const {
     return valuation.evaluateVariable(variableName);
 }
 
-void VariableNode::createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames) {
+void VariableNode::createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {
     addVariableNames(variableNames);
 }
 

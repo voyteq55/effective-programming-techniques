@@ -28,7 +28,7 @@ Tree::~Tree() {
     deallocateMemory();
 }
 
-void Tree::enterNewTree(std::deque<std::string> &userArgs) {
+void Tree::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
     if (userArgs.empty()) {
         deallocateMemory();
         rootNode = nullptr;
@@ -41,7 +41,11 @@ void Tree::enterNewTree(std::deque<std::string> &userArgs) {
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
     rootNode = NodeCreator::allocateAndReturnPointer(nextArg);
-    rootNode->createChildren(userArgs, variableNames);
+    rootNode->createChildren(userArgs, variableNames, warningNotifier);
+    
+    if (!userArgs.empty()) {
+        warningNotifier.notifyEnterTooManyNodes(userArgs);
+    }
 }
 
 std::string Tree::toPrefixNotation() {
@@ -52,10 +56,13 @@ std::string Tree::toPrefixNotation() {
 }
 
 double Tree::evaluate(const Valuation &valuation) {
-    return rootNode->evaluate(valuation);
+    if (rootNode != nullptr) {
+        return rootNode->evaluate(valuation);
+    }
+    return 0;
 }
 
-void Tree::joinTree(std::deque<std::string> &userArgs) {
+void Tree::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
     if (userArgs.empty()) {
         return;
     }
@@ -63,8 +70,11 @@ void Tree::joinTree(std::deque<std::string> &userArgs) {
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
     newRootNode = NodeCreator::allocateAndReturnPointer(nextArg);
-    newRootNode->createChildren(userArgs, variableNames);
+    newRootNode->createChildren(userArgs, variableNames, warningNotifier);
     
+    if (!userArgs.empty()) {
+        warningNotifier.notifyEnterTooManyNodes(userArgs);
+    }
     
     joinNode(newRootNode);
     
@@ -74,13 +84,13 @@ void Tree::joinTree(std::deque<std::string> &userArgs) {
 
 Tree Tree::operator+(const Tree &other) const {
     Tree resultTree(*this);
-//    Node* newRootNode = other.rootNode->clone();
-//    
-//    //do wydzielenia
-//    resultTree.joinNode(newRootNode);
-//    
-//    resultTree.variableNames->clear();
-//    resultTree.rootNode->addVariableNames(resultTree.variableNames);
+    Node* newRootNode = other.rootNode->clone();
+    
+    //do wydzielenia
+    resultTree.joinNode(newRootNode);
+    
+    resultTree.variableNames->clear();
+    resultTree.rootNode->addVariableNames(resultTree.variableNames);
     
     
     return resultTree;

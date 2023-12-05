@@ -5,6 +5,7 @@
 #include <deque>
 #include <set>
 #include "Valuation.h"
+#include "WarningNotifier.h"
 
 class Node {
 public:
@@ -18,7 +19,7 @@ public:
     virtual ~Node();
     
     virtual double evaluate(const Valuation& valuation) const = 0;
-    virtual void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames);
+    virtual void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier);
     virtual void addVariableNames(std::set<std::string>* variableNames) const;
     virtual std::string toString() const;
     virtual std::string toStringWithChildren() const;

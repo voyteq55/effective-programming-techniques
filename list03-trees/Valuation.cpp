@@ -5,9 +5,10 @@
 
 Valuation::Valuation() {}
 
-bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames) {
+bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier) {
     variableValues.clear();
     if (userArgs.size() != variableNames->size()) {
+        warningNotifier.notifyCompIncorrectArgumentNumber(variableNames->size(), userArgs.size());
         return false;
     }
     
@@ -15,6 +16,7 @@ bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<s
         std::string userArg = userArgs.front();
         userArgs.pop_front();
         if (!NodeCreator::isConstant(userArg)) {
+            warningNotifier.notifyCompInvalidArgument(userArg);
             return false;
         }
         double variableValue = std::stod(userArg);

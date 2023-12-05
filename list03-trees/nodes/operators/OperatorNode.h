@@ -7,7 +7,7 @@ class OperatorNode: public Node {
 public:
     OperatorNode();
     
-    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames) override;
+    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) override;
     void addVariableNames(std::set<std::string>* variableNames) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;

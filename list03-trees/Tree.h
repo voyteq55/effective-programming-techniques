@@ -20,10 +20,10 @@ public:
     
     ~Tree();
     
-    void enterNewTree(std::deque<std::string>& userArgs);
+    void enterNewTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
     std::string toPrefixNotation();
     double evaluate(const Valuation &valuation);
-    void joinTree(std::deque<std::string>& userArgs);
+    void joinTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
     

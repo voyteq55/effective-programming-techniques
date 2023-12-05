@@ -39,7 +39,7 @@ Node::~Node() {
     deallocateMemory();
 }
 
-void Node::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames) {}
+void Node::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {}
 
 void Node::addVariableNames(std::set<std::string> *variableNames) const {}
 

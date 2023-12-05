@@ -3,6 +3,7 @@
 
 #include "Tree.h"
 #include "Valuation.h"
+#include "WarningNotifier.h"
 
 const std::string ENTER_COMMAND = "enter";
 const std::string PRINT_COMMAND = "print";
@@ -30,7 +31,7 @@ public:
     void start();
     
 private:
-    std::string executeCommand(std::string commandName, std::deque<std::string> userArgs);
+    std::string executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier &warningNotifier);
     std::deque<std::string> getInputDeque();
     
     bool isProgramRunning;
