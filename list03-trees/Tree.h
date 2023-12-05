@@ -24,6 +24,7 @@ public:
     std::string toPrefixNotation();
     double evaluate(const Valuation &valuation);
     void joinTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
+    void joinAndUpdateVariableNames(Node *newRootNode);
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
     

@@ -9,10 +9,7 @@ SinusOperatorNode::SinusOperatorNode() {
 
 Node* SinusOperatorNode::clone() const {
     Node* newNode = new SinusOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double SinusOperatorNode::evaluate(const Valuation &valuation) const {

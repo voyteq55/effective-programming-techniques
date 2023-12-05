@@ -9,10 +9,7 @@ CosinusOperatorNode::CosinusOperatorNode() {
 
 Node* CosinusOperatorNode::clone() const {
     Node* newNode = new CosinusOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double CosinusOperatorNode::evaluate(const Valuation &valuation) const {

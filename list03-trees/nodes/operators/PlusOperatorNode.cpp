@@ -8,10 +8,7 @@ PlusOperatorNode::PlusOperatorNode() {
 
 Node* PlusOperatorNode::clone() const {
     Node* newNode = new PlusOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double PlusOperatorNode::evaluate(const Valuation &valuation) const {

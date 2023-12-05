@@ -61,6 +61,13 @@ void Node::setChildNode(int index, Node *node) {
     childNodes[index] = node;
 }
 
+Node* Node::cloneChildren(Node *newNode) const {
+    for (int i = 0; i < numberOfArguments; i++) {
+        newNode->setChildNode(i, childNodes[i]->clone());
+    }
+    return newNode;
+}
+
 void Node::deallocateMemory() {
     for (int i = 0; i < numberOfArguments; i++) {
         delete childNodes[i];

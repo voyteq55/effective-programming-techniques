@@ -2,7 +2,6 @@
 #define CONSTANTNODE_H
 
 #include "Node.h"
-//#include "Valuation.h"
 #include <string>
 
 const int DEFAULT_CONSTANT_VALUE = 1;

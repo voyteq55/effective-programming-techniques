@@ -8,10 +8,7 @@ DivideOperatorNode::DivideOperatorNode() {
 
 Node* DivideOperatorNode::clone() const {
     Node* newNode = new DivideOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double DivideOperatorNode::evaluate(const Valuation &valuation) const {

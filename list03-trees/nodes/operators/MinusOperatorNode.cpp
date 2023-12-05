@@ -8,10 +8,7 @@ MinusOperatorNode::MinusOperatorNode() {
 
 Node* MinusOperatorNode::clone() const {
     Node* newNode = new MinusOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double MinusOperatorNode::evaluate(const Valuation &valuation) const {

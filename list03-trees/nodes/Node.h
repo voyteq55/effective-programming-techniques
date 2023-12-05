@@ -26,6 +26,7 @@ public:
     virtual void joinNode(Node *nodeToJoin);
     bool hasChildren();
     void setChildNode(int index, Node *node);
+    virtual Node* cloneChildren(Node *newNode) const;
     
 protected:
     std::string displayLabel;

@@ -1,8 +1,6 @@
 #include "Tree.h"
 #include "NodeCreator.h"
 
-#include <iostream>
-
 Tree::Tree(): rootNode(nullptr) {
     variableNames = new std::set<std::string>;
 }
@@ -76,24 +74,22 @@ void Tree::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningN
         warningNotifier.notifyEnterTooManyNodes(userArgs);
     }
     
-    joinNode(newRootNode);
-    
-    variableNames->clear();
-    rootNode->addVariableNames(variableNames);
+    joinAndUpdateVariableNames(newRootNode);
 }
 
 Tree Tree::operator+(const Tree &other) const {
     Tree resultTree(*this);
     Node* newRootNode = other.rootNode->clone();
     
-    //do wydzielenia
-    resultTree.joinNode(newRootNode);
-    
-    resultTree.variableNames->clear();
-    resultTree.rootNode->addVariableNames(resultTree.variableNames);
-    
+    resultTree.joinAndUpdateVariableNames(newRootNode);
     
     return resultTree;
+}
+
+void Tree::joinAndUpdateVariableNames(Node *newRootNode) {
+    joinNode(newRootNode);
+    variableNames->clear();
+    rootNode->addVariableNames(variableNames);
 }
 
 std::string Tree::getVariableNamesString() {

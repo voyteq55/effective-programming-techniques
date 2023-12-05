@@ -2,9 +2,7 @@
 
 ConstantNode::ConstantNode(): constantValue(DEFAULT_CONSTANT_VALUE) {}
 
-ConstantNode::ConstantNode(double value): constantValue(value) {
-//    displayLabel = std::to_string(constantValue);
-}
+ConstantNode::ConstantNode(double value): constantValue(value) {}
 
 Node* ConstantNode::clone() const {
     return new ConstantNode(constantValue);

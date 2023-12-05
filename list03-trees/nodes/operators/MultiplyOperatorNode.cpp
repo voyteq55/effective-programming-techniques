@@ -8,10 +8,7 @@ MultiplyOperatorNode::MultiplyOperatorNode() {
 
 Node* MultiplyOperatorNode::clone() const {
     Node* newNode = new MultiplyOperatorNode();
-    for (int i = 0; i < numberOfArguments; i++) {
-        newNode->setChildNode(i, childNodes[i]->clone());
-    }
-    return newNode;
+    return cloneChildren(newNode);
 }
 
 double MultiplyOperatorNode::evaluate(const Valuation &valuation) const {
