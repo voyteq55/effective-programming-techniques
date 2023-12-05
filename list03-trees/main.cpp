@@ -6,6 +6,7 @@
 #include "NodeCreator.h"
 #include "PlusOperatorNode.h"
 #include "Valuation.h"
+#include "ConsoleController.h"
 
 void tests() {
     Tree testTree;
@@ -70,43 +71,8 @@ void tests() {
 
 int main() {
     tests();
-    std::cout << "Enter a command ('enter <formula', 'vars', 'print', 'comp <var1> ... <varn>', 'join <formula>')\n";
-    std::string res;
-    Tree tree;
-    Valuation valuation;
-    
-    bool isProgramRunning = true;
-    while (isProgramRunning) {
-        std::cout << "> ";
-        std::string userInput;
-        std::getline(std::cin, userInput);
-        
-        std::deque<std::string> wordsDeque;
-        std::istringstream iss(userInput);
-        std::string currentWord;
-        
-        while (iss >> currentWord) {
-            wordsDeque.push_back(currentWord);
-        }
-        
-        std::string firstWord = wordsDeque.front();
-        wordsDeque.pop_front();
-        if (firstWord == "enter") {
-            tree.enterNewTree(wordsDeque);
-        } else if (firstWord == "print") {
-            std::cout << tree.toPrefixNotation() << "\n";
-        } else if (firstWord == "comp") {
-            if (valuation.setValuation(wordsDeque, tree.getVariableNamesSet())) {
-                std::cout << tree.evaluate(valuation) << "\n";
-            }
-        } else if (firstWord == "vars") {
-            std::cout << tree.getVariableNamesString() << "\n";
-        } else if (firstWord == "join") {
-            tree.joinTree(wordsDeque);
-        } else if (firstWord == "exit") {
-            isProgramRunning = false;
-        }
-    }
+    ConsoleController consoleController;
+    consoleController.start();
     
     return 0;
 }

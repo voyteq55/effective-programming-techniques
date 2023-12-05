@@ -26,6 +26,9 @@ Tree::~Tree() {
 }
 
 void Tree::enterNewTree(std::deque<std::string> &userArgs) {
+    if (userArgs.empty()) {
+        return;
+    }
     deallocateMemory();
     variableNames = new std::set<std::string>;
     
@@ -47,6 +50,9 @@ double Tree::evaluate(const Valuation &valuation) {
 }
 
 void Tree::joinTree(std::deque<std::string> &userArgs) {
+    if (userArgs.empty()) {
+        return;
+    }
     Node *newRootNode;
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
@@ -55,7 +61,6 @@ void Tree::joinTree(std::deque<std::string> &userArgs) {
     
     
     joinNode(newRootNode);
-    
     
     variableNames->clear();
     rootNode->addVariableNames(variableNames);

@@ -15,7 +15,7 @@ double ConstantNode::evaluate(const Valuation &valuation) const {
 }
 
 std::string ConstantNode::toString() const {
-    return std::to_string(constantValue);
+    return std::to_string(static_cast<int>(constantValue));
 }
 
 std::string ConstantNode::toStringWithChildren() const {
