@@ -28,7 +28,7 @@ public:
     bool hasChildren();
     void setChildNode(int index, Node<T> *node);
     virtual Node<T>* cloneChildren(Node<T> *newNode) const;
-    
+ 
 protected:
     std::string displayLabel;
     int numberOfArguments;

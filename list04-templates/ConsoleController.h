@@ -16,7 +16,7 @@ const std::string EXIT_COMMAND = "exit";
 const std::string EMPTY_COMMAND = "<no command>";
 
 const std::string COMMAND_START = "> ";
-const std::string START_MESSAGE = "asdfasdfEnter a command ('enter <formula', 'vars', 'print', 'comp <var1> ... <varn>', 'join <formula>')";
+const std::string START_MESSAGE = "asdffffffEnter a command ('enter <formula', 'vars', 'print', 'comp <var1> ... <varn>', 'join <formula>')";
 const std::string INVALID_COMMAND_MESSAGE = "Invalid command name: ";
 const std::string ENTER_TREE_MESSAGE = "Tree entered: ";
 const std::string PRINT_TREE_MESSAGE = "Tree: ";

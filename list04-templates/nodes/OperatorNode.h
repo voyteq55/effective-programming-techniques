@@ -152,8 +152,6 @@ Node<T>* OperatorNode<T>::allocateAndReturnPointer(std::string userInput) {
         return new OperatorNode(COSINUS_OPERATOR_DISPLAY_LABEL);
     }
     if (Valuation<T>::isConstant(userInput)) {
-//        double constantValue = std::stod(userInput);
-//        return new ConstantNode<T>(constantValue);
         return getConstantValueNode(userInput);
     }
     
@@ -172,10 +170,21 @@ Node<T>* OperatorNode<T>::allocateDefaultConstantNode() {
 }
 
 template <typename T>
-void OperatorNode<T>::removeInvalidCharacters(std::string &userInput) {
+void OperatorNode<T>::removeInvalidCharacters(std::string &userInput) {}
+
+template <>
+inline void OperatorNode<int>::removeInvalidCharacters(std::string &userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
             return !std::isalnum(c);
+        }), userInput.end());
+}
+
+template <>
+inline void OperatorNode<double>::removeInvalidCharacters(std::string &userInput) {
+    userInput.erase(
+        std::remove_if(userInput.begin(), userInput.end(), [](char c) {
+            return !std::isalnum(c) && c != '.';
         }), userInput.end());
 }
 
@@ -187,6 +196,11 @@ Node<T>* OperatorNode<T>::getConstantValueNode(const std::string userInput) {
 template <>
 inline Node<int>* OperatorNode<int>::getConstantValueNode(const std::string userInput) {
     return new ConstantNode<int>(std::stoi(userInput));
+}
+
+template <>
+inline Node<double>* OperatorNode<double>::getConstantValueNode(const std::string userInput) {
+    return new ConstantNode<double>(std::stod(userInput));
 }
 
 #endif

@@ -24,7 +24,7 @@ public:
     
     void enterNewTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
     std::string toPrefixNotation();
-    double evaluate(const Valuation<T> &valuation);
+    T evaluate(const Valuation<T> &valuation);
     void joinTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
     void joinAndUpdateVariableNames(Node<T> *newRootNode);
     std::string getVariableNamesString();
@@ -98,11 +98,11 @@ std::string Tree<T>::toPrefixNotation() {
 }
 
 template <typename T>
-double Tree<T>::evaluate(const Valuation<T> &valuation) {
+T Tree<T>::evaluate(const Valuation<T> &valuation) {
     if (rootNode != nullptr) {
         return rootNode->evaluate(valuation);
     }
-    return 0;
+    return T();
 }
 
 template <typename T>
