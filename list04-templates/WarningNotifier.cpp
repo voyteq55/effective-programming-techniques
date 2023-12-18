@@ -12,7 +12,7 @@ std::string WarningNotifier::getWarningMessage() {
     if (missingNodesNumber != 0) warningMessage += "Entered too few arguments (" + std::to_string(missingNodesNumber) + " argument(s) autocompleted)\n";
     if (excessiveNodes != "") warningMessage += "Entered too many arguments (ignored: " + excessiveNodes + ")\n";
     if (expectedVariablesCount != actualVariablesCount) warningMessage += "Incorrect argument count: expected " + std::to_string(expectedVariablesCount) + ", got " + std::to_string(actualVariablesCount) + "\n";
-    if (invalidArgument != "") warningMessage += "Invalid input (" + invalidArgument + +"), arguments have to be integers\n";
+    if (invalidArgument != "") warningMessage += "Invalid input (" + invalidArgument + +")\n";
     return warningMessage;
 }
 

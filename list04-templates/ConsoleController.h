@@ -80,7 +80,7 @@ std::string ConsoleController<T>::executeCommand(std::string commandName, std::d
     }
     if (commandName == COMP_COMMAND) {
         if (valuation.setValuation(userArgs, tree.getVariableNamesSet(), warningNotifier)) {
-            return EVAL_MESSAGE + std::to_string(tree.evaluate(valuation));
+            return EVAL_MESSAGE + Valuation<T>::toString(tree.evaluate(valuation));
         }
         return EVAL_FAIL_MESSAGE;
     }

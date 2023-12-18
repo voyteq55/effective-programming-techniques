@@ -1,7 +1,7 @@
 #include "ConsoleController.h"
 
 int main() {
-    ConsoleController<double> consoleController;
+    ConsoleController<std::string> consoleController;
     consoleController.start();
     return 0;
 }

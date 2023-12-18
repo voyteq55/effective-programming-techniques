@@ -6,6 +6,7 @@
 
 const int DEFAULT_CONSTANT_INT_VALUE = 1;
 const double DEFAULT_CONSTANT_DOUBLE_VALUE = 1;
+const std::string DEFAULT_CONSTANT_STRING_VALUE = "default";
 
 template <typename T>
 class ConstantNode: public Node<T> {
@@ -33,6 +34,9 @@ inline ConstantNode<int>::ConstantNode(): constantValue(DEFAULT_CONSTANT_INT_VAL
 template <>
 inline ConstantNode<double>::ConstantNode(): constantValue(DEFAULT_CONSTANT_DOUBLE_VALUE) {}
 
+template <>
+inline ConstantNode<std::string>::ConstantNode(): constantValue(DEFAULT_CONSTANT_STRING_VALUE) {}
+
 template <typename T>
 ConstantNode<T>::ConstantNode(T value): constantValue(value) {}
 
@@ -59,6 +63,11 @@ inline std::string ConstantNode<int>::toString() const {
 template <>
 inline std::string ConstantNode<double>::toString() const {
     return std::to_string(static_cast<double>(constantValue));
+}
+
+template <>
+inline std::string ConstantNode<std::string>::toString() const {
+    return constantValue;
 }
 
 template <typename T>

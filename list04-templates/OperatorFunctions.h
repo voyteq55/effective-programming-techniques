@@ -29,6 +29,11 @@ double OperatorFunctions<double>::plus(double left, double right) {
     return left + right;
 }
 
+template <>
+std::string OperatorFunctions<std::string>::plus(std::string left, std::string right) {
+    return left + right;
+}
+
 template <typename T>
 T OperatorFunctions<T>::minus(T left, T right) {
     return left;
