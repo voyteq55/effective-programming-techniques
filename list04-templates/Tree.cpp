@@ -1,5 +1,5 @@
 #include "Tree.h"
-#include "NodeCreator.h"
+#include "OperatorNode.h"
 
 Tree::Tree(): rootNode(nullptr) {
     variableNames = new std::set<std::string>;
@@ -38,7 +38,7 @@ void Tree::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warn
     
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
-    rootNode = NodeCreator::allocateAndReturnPointer(nextArg);
+    rootNode = OperatorNode::allocateAndReturnPointer(nextArg);
     rootNode->createChildren(userArgs, variableNames, warningNotifier);
     
     if (!userArgs.empty()) {
@@ -67,7 +67,7 @@ void Tree::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningN
     Node *newRootNode;
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
-    newRootNode = NodeCreator::allocateAndReturnPointer(nextArg);
+    newRootNode = OperatorNode::allocateAndReturnPointer(nextArg);
     newRootNode->createChildren(userArgs, variableNames, warningNotifier);
     
     if (!userArgs.empty()) {

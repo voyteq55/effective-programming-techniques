@@ -1,5 +1,4 @@
 #include "Valuation.h"
-#include "NodeCreator.h"
 #include <string>
 #include <set>
 
@@ -15,7 +14,7 @@ bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<s
     for (const std::string& variableName : *variableNames) {
         std::string userArg = userArgs.front();
         userArgs.pop_front();
-        if (!NodeCreator::isConstant(userArg)) {
+        if (!isConstant(userArg)) {
             warningNotifier.notifyCompInvalidArgument(userArg);
             return false;
         }
@@ -30,4 +29,8 @@ double Valuation::evaluateVariable(std::string variableName) const {
         return variableValues.at(variableName);
     }
     return 0;
+}
+
+bool Valuation::isConstant(const std::string userInput) {
+    return std::all_of(userInput.begin(), userInput.end(), std::isdigit);
 }
