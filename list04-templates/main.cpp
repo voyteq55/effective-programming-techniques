@@ -1,7 +1,7 @@
 #include "ConsoleController.h"
 
 int main() {
-    ConsoleController<int> consoleController;
+    ConsoleController<double> consoleController;
     consoleController.start();
     return 0;
 }

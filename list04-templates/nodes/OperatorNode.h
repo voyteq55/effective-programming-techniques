@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "ConstantNode.h"
 #include "VariableNode.h"
+#include "OperatorFunctions.h"
 
 const std::string DEFAULT_VARIABLE_FIRST_LETTER = "A";
 
@@ -69,18 +70,24 @@ Node<T>* OperatorNode<T>::clone() const {
 template <typename T>
 T OperatorNode<T>::evaluate(const Valuation<T> &valuation) const {
     if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL)
-        return this->childNodes[0]->evaluate(valuation) + this->childNodes[1]->evaluate(valuation);
+        return OperatorFunctions<T>::plus(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
+//        return this->childNodes[0]->evaluate(valuation) + this->childNodes[1]->evaluate(valuation);
     if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL)
-        return this->childNodes[0]->evaluate(valuation) - this->childNodes[1]->evaluate(valuation);
+        return OperatorFunctions<T>::minus(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
+//        return this->childNodes[0]->evaluate(valuation) - this->childNodes[1]->evaluate(valuation);
     if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL)
-        return this->childNodes[0]->evaluate(valuation) * this->childNodes[1]->evaluate(valuation);
+        return OperatorFunctions<T>::multiply(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
+//        return this->childNodes[0]->evaluate(valuation) * this->childNodes[1]->evaluate(valuation);
     if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL)
-        return this->childNodes[0]->evaluate(valuation) / this->childNodes[1]->evaluate(valuation);
+        return OperatorFunctions<T>::divide(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
+//        return this->childNodes[0]->evaluate(valuation) / this->childNodes[1]->evaluate(valuation);
     if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL)
-        return std::sin(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
+        return OperatorFunctions<T>::sinus(this->childNodes[0]->evaluate(valuation));
+//        return std::sin(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
     if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL)
-        return std::cos(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
-    return 0;
+        return OperatorFunctions<T>::cosinus(this->childNodes[0]->evaluate(valuation));
+//        return std::cos(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
+    return T();
 }
 
 template <typename T>
