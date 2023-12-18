@@ -9,43 +9,47 @@
 
 const std::string EMPTY_TREE_REPRESENTATION = "<empty tree>";
 
+template <typename T>
 class Tree {
 public:
     Tree();
-    Tree(const Tree &copy);
+    Tree(const Tree<T> &copy);
     
-    Tree& operator=(const Tree &other);
-    void makeCopy(const Tree &other);
+    Tree<T>& operator=(const Tree<T> &other);
+    void makeCopy(const Tree<T> &other);
     
-    Tree operator+(const Tree &other) const;
+    Tree<T> operator+(const Tree<T> &other) const;
     
     ~Tree();
     
     void enterNewTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
     std::string toPrefixNotation();
-    double evaluate(const Valuation &valuation);
+    double evaluate(const Valuation<T> &valuation);
     void joinTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
-    void joinAndUpdateVariableNames(Node *newRootNode);
+    void joinAndUpdateVariableNames(Node<T> *newRootNode);
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
     
 private:
-    Node *rootNode;
+    Node<T> *rootNode;
     std::set<std::string> *variableNames;
     
-    void joinNode(Node *otherRootNode);
+    void joinNode(Node<T> *otherRootNode);
     void deallocateMemory();
 };
 
-Tree::Tree(): rootNode(nullptr) {
+template <typename T>
+Tree<T>::Tree(): rootNode(nullptr) {
     variableNames = new std::set<std::string>;
 }
 
-Tree::Tree(const Tree &copy) {
+template <typename T>
+Tree<T>::Tree(const Tree<T> &copy) {
     makeCopy(copy);
 }
 
-Tree& Tree::operator=(const Tree &other) {
+template <typename T>
+Tree<T>& Tree<T>::operator=(const Tree<T> &other) {
     if (this != &other) {
         deallocateMemory();
         makeCopy(other);
@@ -53,16 +57,19 @@ Tree& Tree::operator=(const Tree &other) {
     return *this;
 }
 
-void Tree::makeCopy(const Tree &other) {
+template <typename T>
+void Tree<T>::makeCopy(const Tree<T> &other) {
     rootNode = other.rootNode->clone();
     variableNames = new std::set<std::string>(*other.variableNames);
 }
 
-Tree::~Tree() {
+template <typename T>
+Tree<T>::~Tree() {
     deallocateMemory();
 }
 
-void Tree::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
+template <typename T>
+void Tree<T>::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
     if (userArgs.empty()) {
         deallocateMemory();
         rootNode = nullptr;
@@ -74,7 +81,7 @@ void Tree::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warn
     
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
-    rootNode = OperatorNode::allocateAndReturnPointer(nextArg);
+    rootNode = OperatorNode<T>::allocateAndReturnPointer(nextArg);
     rootNode->createChildren(userArgs, variableNames, warningNotifier);
     
     if (!userArgs.empty()) {
@@ -82,28 +89,31 @@ void Tree::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warn
     }
 }
 
-std::string Tree::toPrefixNotation() {
+template <typename T>
+std::string Tree<T>::toPrefixNotation() {
     if (rootNode != nullptr) {
         return rootNode->toStringWithChildren();
     }
     return EMPTY_TREE_REPRESENTATION;
 }
 
-double Tree::evaluate(const Valuation &valuation) {
+template <typename T>
+double Tree<T>::evaluate(const Valuation<T> &valuation) {
     if (rootNode != nullptr) {
         return rootNode->evaluate(valuation);
     }
     return 0;
 }
 
-void Tree::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
+template <typename T>
+void Tree<T>::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
     if (userArgs.empty()) {
         return;
     }
-    Node *newRootNode;
+    Node<T> *newRootNode;
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
-    newRootNode = OperatorNode::allocateAndReturnPointer(nextArg);
+    newRootNode = OperatorNode<T>::allocateAndReturnPointer(nextArg);
     newRootNode->createChildren(userArgs, variableNames, warningNotifier);
     
     if (!userArgs.empty()) {
@@ -113,22 +123,25 @@ void Tree::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningN
     joinAndUpdateVariableNames(newRootNode);
 }
 
-Tree Tree::operator+(const Tree &other) const {
-    Tree resultTree(*this);
-    Node* newRootNode = other.rootNode->clone();
+template <typename T>
+Tree<T> Tree<T>::operator+(const Tree<T> &other) const {
+    Tree<T> resultTree(*this);
+    Node<T>* newRootNode = other.rootNode->clone();
     
     resultTree.joinAndUpdateVariableNames(newRootNode);
     
     return resultTree;
 }
 
-inline void Tree::joinAndUpdateVariableNames(Node *newRootNode) {
+template <typename T>
+inline void Tree<T>::joinAndUpdateVariableNames(Node<T> *newRootNode) {
     joinNode(newRootNode);
     variableNames->clear();
     rootNode->addVariableNames(variableNames);
 }
 
-std::string Tree::getVariableNamesString() {
+template <typename T>
+std::string Tree<T>::getVariableNamesString() {
     std::string allVariableNames;
     for (const std::string& name : *variableNames) {
         allVariableNames += name;
@@ -137,11 +150,13 @@ std::string Tree::getVariableNamesString() {
     return allVariableNames;
 }
 
-std::set<std::string>* Tree::getVariableNamesSet() const {
+template <typename T>
+std::set<std::string>* Tree<T>::getVariableNamesSet() const {
     return variableNames;
 }
 
-void Tree::joinNode(Node *otherRootNode) {
+template <typename T>
+void Tree<T>::joinNode(Node<T> *otherRootNode) {
     if (rootNode == nullptr) {
         rootNode = otherRootNode;
     } else if (!rootNode->hasChildren()) {
@@ -152,7 +167,8 @@ void Tree::joinNode(Node *otherRootNode) {
     }
 }
 
-void Tree::deallocateMemory() {
+template <typename T>
+void Tree<T>::deallocateMemory() {
     delete rootNode;
     delete variableNames;
 }

@@ -7,47 +7,51 @@
 #include "Valuation.h"
 #include "WarningNotifier.h"
 
+template <typename T>
 class Node {
 public:
     Node();
-    Node(const Node &copy);
+    Node(const Node<T> &copy);
     
-    Node& operator=(const Node &other);
-    virtual Node* clone() const = 0;
-    void makeCopy(const Node &other);
+    Node<T>& operator=(const Node<T> &other);
+    virtual Node<T>* clone() const = 0;
+    void makeCopy(const Node<T> &other);
     
     virtual ~Node();
     
-    virtual double evaluate(const Valuation& valuation) const = 0;
+    virtual T evaluate(const Valuation<T>& valuation) const = 0;
     virtual void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier);
     virtual void addVariableNames(std::set<std::string>* variableNames) const;
     virtual std::string toString() const;
     virtual std::string toStringWithChildren() const;
-    virtual void joinNode(Node *nodeToJoin);
+    virtual void joinNode(Node<T> *nodeToJoin);
     bool hasChildren();
-    void setChildNode(int index, Node *node);
-    virtual Node* cloneChildren(Node *newNode) const;
+    void setChildNode(int index, Node<T> *node);
+    virtual Node<T>* cloneChildren(Node<T> *newNode) const;
     
 protected:
     std::string displayLabel;
     int numberOfArguments;
-    Node **childNodes;
+    Node<T> **childNodes;
     
     void deallocateMemory();
     
 };
 
-Node::Node() {
+template <typename T>
+Node<T>::Node() {
     displayLabel = "";
     numberOfArguments = 0;
     childNodes = nullptr;
 }
 
-Node::Node(const Node &copy) {
+template <typename T>
+Node<T>::Node(const Node<T> &copy) {
     makeCopy(copy);
 }
 
-Node& Node::operator=(const Node &other) {
+template <typename T>
+Node<T>& Node<T>::operator=(const Node<T> &other) {
     if (this != &other) {
         if (childNodes != nullptr) {
             deallocateMemory();
@@ -57,58 +61,68 @@ Node& Node::operator=(const Node &other) {
     return *this;
 }
 
-void Node::makeCopy(const Node &other) {
+template <typename T>
+void Node<T>::makeCopy(const Node<T> &other) {
     displayLabel = other.displayLabel;
     numberOfArguments = other.numberOfArguments;
     if (other.childNodes == nullptr) {
         childNodes = nullptr;
     } else {
-        childNodes = new Node*[numberOfArguments];
+        childNodes = new Node<T>*[numberOfArguments];
         for (int i = 0; i < numberOfArguments; i++) {
             childNodes[i] = other.childNodes[i]->clone();
         }
     }
 }
 
-Node::~Node() {
+template <typename T>
+Node<T>::~Node() {
     deallocateMemory();
 }
 
-void Node::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {}
+template <typename T>
+void Node<T>::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {}
 
-void Node::addVariableNames(std::set<std::string> *variableNames) const {}
+template <typename T>
+void Node<T>::addVariableNames(std::set<std::string> *variableNames) const {}
 
-std::string Node::toString() const {
+template <typename T>
+std::string Node<T>::toString() const {
     return displayLabel;
 }
 
-std::string Node::toStringWithChildren() const {
+template <typename T>
+std::string Node<T>::toStringWithChildren() const {
     return toString();
 }
 
-void Node::joinNode(Node *nodeToJoin) {}
+template <typename T>
+void Node<T>::joinNode(Node<T> *nodeToJoin) {}
 
-bool Node::hasChildren() {
+template <typename T>
+bool Node<T>::hasChildren() {
     return childNodes != nullptr;
 }
 
-void Node::setChildNode(int index, Node *node) {
+template <typename T>
+void Node<T>::setChildNode(int index, Node<T> *node) {
     childNodes[index] = node;
 }
 
-Node* Node::cloneChildren(Node *newNode) const {
+template <typename T>
+Node<T>* Node<T>::cloneChildren(Node<T> *newNode) const {
     for (int i = 0; i < numberOfArguments; i++) {
         newNode->setChildNode(i, childNodes[i]->clone());
     }
     return newNode;
 }
 
-void Node::deallocateMemory() {
+template <typename T>
+void Node<T>::deallocateMemory() {
     for (int i = 0; i < numberOfArguments; i++) {
         delete childNodes[i];
     }
     delete[] childNodes;
 }
-
 
 #endif

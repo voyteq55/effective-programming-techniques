@@ -6,6 +6,7 @@
 #include <deque>
 #include <set>
 
+template <typename T>
 class Valuation {
 public:
     Valuation();
@@ -13,15 +14,18 @@ public:
     bool setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier);
     double evaluateVariable(std::string variableName) const;
     static bool isConstant(const std::string userInput);
+    static T getConstantValue(const std::string userInput);
     
 private:
-    std::unordered_map<std::string, double> variableValues;
+    std::unordered_map<std::string, T> variableValues;
     
 };
 
-Valuation::Valuation() {}
+template <typename T>
+Valuation<T>::Valuation() {}
 
-bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier) {
+template <typename T>
+bool Valuation<T>::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier) {
     variableValues.clear();
     if (userArgs.size() != variableNames->size()) {
         warningNotifier.notifyCompIncorrectArgumentNumber(variableNames->size(), userArgs.size());
@@ -35,21 +39,34 @@ bool Valuation::setValuation(std::deque<std::string> &userArgs, const std::set<s
             warningNotifier.notifyCompInvalidArgument(userArg);
             return false;
         }
-        double variableValue = std::stod(userArg);
+        T variableValue = getConstantValue(userArg);
+//        double variableValue = std::stod(userArg);
         variableValues.insert(std::make_pair(variableName, variableValue));
     }
     return true;
 }
 
-double Valuation::evaluateVariable(std::string variableName) const {
+template <typename T>
+double Valuation<T>::evaluateVariable(std::string variableName) const {
     if (variableValues.find(variableName) != variableValues.end()) {
         return variableValues.at(variableName);
     }
     return 0;
 }
 
-bool Valuation::isConstant(const std::string userInput) {
+template <typename T>
+bool Valuation<T>::isConstant(const std::string userInput) {
     return std::all_of(userInput.begin(), userInput.end(), std::isdigit);
+}
+
+template <typename T>
+T Valuation<T>::getConstantValue(const std::string userInput) {
+    return T();
+}
+
+template <>
+inline int Valuation<int>::getConstantValue(const std::string userInput) {
+    return std::stod(userInput);
 }
 
 #endif

@@ -6,39 +6,54 @@
 
 const int DEFAULT_CONSTANT_VALUE = 1;
 
-class ConstantNode: public Node {
+template <typename T>
+class ConstantNode: public Node<T> {
 public:
     ConstantNode();
-    ConstantNode(double value);
+    ConstantNode(T value);
     
-    Node* clone() const override;
+    Node<T>* clone() const override;
     
-    double evaluate(const Valuation &valuation) const override;
+    T evaluate(const Valuation<T> &valuation) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
     
 private:
-    const double constantValue;
+    const T constantValue;
     
 };
 
-ConstantNode::ConstantNode(): constantValue(DEFAULT_CONSTANT_VALUE) {}
+template <typename T>
+ConstantNode<T>::ConstantNode(): constantValue(DEFAULT_CONSTANT_VALUE) {}
 
-ConstantNode::ConstantNode(double value): constantValue(value) {}
+template <>
+inline ConstantNode<int>::ConstantNode(): constantValue(DEFAULT_CONSTANT_VALUE) {}
 
-Node* ConstantNode::clone() const {
-    return new ConstantNode(constantValue);
+template <typename T>
+ConstantNode<T>::ConstantNode(T value): constantValue(value) {}
+
+template <typename T>
+Node<T>* ConstantNode<T>::clone() const {
+    return new ConstantNode<T>(constantValue);
 }
 
-double ConstantNode::evaluate(const Valuation &valuation) const {
+template <typename T>
+T ConstantNode<T>::evaluate(const Valuation<T> &valuation) const {
     return constantValue;
 }
 
-std::string ConstantNode::toString() const {
+template <typename T>
+std::string ConstantNode<T>::toString() const {
+    return "no value";
+}
+
+template <>
+inline std::string ConstantNode<int>::toString() const {
     return std::to_string(static_cast<int>(constantValue));
 }
 
-std::string ConstantNode::toStringWithChildren() const {
+template <typename T>
+std::string ConstantNode<T>::toStringWithChildren() const {
     return toString();
 }
 

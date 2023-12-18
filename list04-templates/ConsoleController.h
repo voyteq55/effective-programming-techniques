@@ -26,6 +26,7 @@ const std::string EVAL_FAIL_MESSAGE = "Evaluation unsuccessful";
 const std::string JOIN_TREE_MESSAGE = "Tree after joining: ";
 const std::string EXIT_MESSAGE = "Program finished";
 
+template <typename T>
 class ConsoleController {
 public:
     ConsoleController();
@@ -37,14 +38,16 @@ private:
     std::deque<std::string> getInputDeque();
     
     bool isProgramRunning;
-    Tree tree;
-    Valuation valuation;
+    Tree<T> tree;
+    Valuation<T> valuation;
     
 };
 
-ConsoleController::ConsoleController(): isProgramRunning(true) {}
+template <typename T>
+ConsoleController<T>::ConsoleController(): isProgramRunning(true) {}
 
-void ConsoleController::start() {
+template <typename T>
+void ConsoleController<T>::start() {
     std::cout << START_MESSAGE << "\n";
     
     WarningNotifier warningNotifier;
@@ -66,7 +69,8 @@ void ConsoleController::start() {
     }
 }
 
-std::string ConsoleController::executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier &warningNotifier) {
+template <typename T>
+std::string ConsoleController<T>::executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier &warningNotifier) {
     if (commandName == ENTER_COMMAND) {
         tree.enterNewTree(userArgs, warningNotifier);
         return ENTER_TREE_MESSAGE + tree.toPrefixNotation();
@@ -94,7 +98,8 @@ std::string ConsoleController::executeCommand(std::string commandName, std::dequ
     return INVALID_COMMAND_MESSAGE + commandName;
 }
 
-std::deque<std::string> ConsoleController::getInputDeque() {
+template <typename T>
+std::deque<std::string> ConsoleController<T>::getInputDeque() {
     std::string userInput;
     std::getline(std::cin, userInput);
     

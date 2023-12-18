@@ -21,106 +21,118 @@ const int DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS = 2;
 const int SINUS_OPERATOR_NUMBER_OF_ARGUMENTS = 1;
 const int COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS = 1;
 
-class OperatorNode: public Node {
+template <typename T>
+class OperatorNode: public Node<T> {
 public:
     OperatorNode();
     OperatorNode(std::string displayLabel);
     
-    Node* clone() const override;
+    Node<T>* clone() const override;
     
-    double evaluate(const Valuation &valuation) const override;
+    T evaluate(const Valuation<T> &valuation) const override;
     void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) override;
     void addVariableNames(std::set<std::string>* variableNames) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
-    void joinNode(Node *nodeToJoin) override;
+    void joinNode(Node<T> *nodeToJoin) override;
     
-    static Node* allocateAndReturnPointer(std::string userInput);
-    static Node* allocateDefaultConstantNode();
+    static Node<T>* allocateAndReturnPointer(std::string userInput);
+    static Node<T>* allocateDefaultConstantNode();
     static void removeInvalidCharacters(std::string& userInput);
+    static Node<T>* getConstantValueNode(const std::string userInput);
     
 };
 
-OperatorNode::OperatorNode() {
-    numberOfArguments = 0;
+template <typename T>
+OperatorNode<T>::OperatorNode() {
+    this->numberOfArguments = 0;
 }
 
-OperatorNode::OperatorNode(std::string label) {
-    displayLabel = label;
-    if (displayLabel == PLUS_OPERATOR_DISPLAY_LABEL) numberOfArguments = PLUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (displayLabel == MINUS_OPERATOR_DISPLAY_LABEL) numberOfArguments = MINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL) numberOfArguments = MULTIPLY_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL) numberOfArguments = DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (displayLabel == SINUS_OPERATOR_DISPLAY_LABEL) numberOfArguments = SINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL) numberOfArguments = COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    childNodes = new Node*[numberOfArguments];
+template <typename T>
+OperatorNode<T>::OperatorNode(std::string label) {
+    this->displayLabel = label;
+    if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = PLUS_OPERATOR_NUMBER_OF_ARGUMENTS;
+    if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = MINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
+    if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = MULTIPLY_OPERATOR_NUMBER_OF_ARGUMENTS;
+    if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS;
+    if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = SINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
+    if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
+    this->childNodes = new Node<T>*[this->numberOfArguments];
 }
 
-Node* OperatorNode::clone() const {
-    Node* newNode = new OperatorNode(displayLabel);
-    return cloneChildren(newNode);
+template <typename T>
+Node<T>* OperatorNode<T>::clone() const {
+    Node<T>* newNode = new OperatorNode<T>(this->displayLabel);
+    return this->cloneChildren(newNode);
 }
 
-double OperatorNode::evaluate(const Valuation &valuation) const {
-    if (displayLabel == PLUS_OPERATOR_DISPLAY_LABEL)
-        return childNodes[0]->evaluate(valuation) + childNodes[1]->evaluate(valuation);
-    if (displayLabel == MINUS_OPERATOR_DISPLAY_LABEL)
-        return childNodes[0]->evaluate(valuation) - childNodes[1]->evaluate(valuation);
-    if (displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL)
-        return childNodes[0]->evaluate(valuation) * childNodes[1]->evaluate(valuation);
-    if (displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL)
-        return childNodes[0]->evaluate(valuation) / childNodes[1]->evaluate(valuation);
-    if (displayLabel == SINUS_OPERATOR_DISPLAY_LABEL)
-        return std::sin(childNodes[0]->evaluate(valuation) * M_PI / 180.0);
-    if (displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL)
-        return std::cos(childNodes[0]->evaluate(valuation) * M_PI / 180.0);
+template <typename T>
+T OperatorNode<T>::evaluate(const Valuation<T> &valuation) const {
+    if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL)
+        return this->childNodes[0]->evaluate(valuation) + this->childNodes[1]->evaluate(valuation);
+    if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL)
+        return this->childNodes[0]->evaluate(valuation) - this->childNodes[1]->evaluate(valuation);
+    if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL)
+        return this->childNodes[0]->evaluate(valuation) * this->childNodes[1]->evaluate(valuation);
+    if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL)
+        return this->childNodes[0]->evaluate(valuation) / this->childNodes[1]->evaluate(valuation);
+    if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL)
+        return std::sin(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
+    if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL)
+        return std::cos(this->childNodes[0]->evaluate(valuation) * M_PI / 180.0);
     return 0;
 }
 
-void OperatorNode::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {
-    for (int i = 0; i < numberOfArguments; i++) {
+template <typename T>
+void OperatorNode<T>::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {
+    for (int i = 0; i < this->numberOfArguments; i++) {
         if (!userArgs.empty()) {
             std::string argString = userArgs.front();
             userArgs.pop_front();
-            childNodes[i] = OperatorNode::allocateAndReturnPointer(argString);
-            childNodes[i]->createChildren(userArgs, variableNames, warningNotifier);
+            this->childNodes[i] = OperatorNode<T>::allocateAndReturnPointer(argString);
+            this->childNodes[i]->createChildren(userArgs, variableNames, warningNotifier);
         } else {
             warningNotifier.notifyEnterTooFewNodes();
-            childNodes[i] = OperatorNode::allocateDefaultConstantNode();
+            this->childNodes[i] = OperatorNode<T>::allocateDefaultConstantNode();
         }
     }
 }
 
-void OperatorNode::addVariableNames(std::set<std::string> *variableNames) const {
-    for (int i = 0; i < numberOfArguments; i++) {
-        childNodes[i]->addVariableNames(variableNames);
+template <typename T>
+void OperatorNode<T>::addVariableNames(std::set<std::string> *variableNames) const {
+    for (int i = 0; i < this->numberOfArguments; i++) {
+        this->childNodes[i]->addVariableNames(variableNames);
     }
 }
 
-std::string OperatorNode::toString() const {
-    return displayLabel;
+template <typename T>
+std::string OperatorNode<T>::toString() const {
+    return this->displayLabel;
 }
 
-std::string OperatorNode::toStringWithChildren() const {
-    std::string stringToReturn = displayLabel;
-    for (int i = 0; i < numberOfArguments; i++) {
+template <typename T>
+std::string OperatorNode<T>::toStringWithChildren() const {
+    std::string stringToReturn = this->displayLabel;
+    for (int i = 0; i < this->numberOfArguments; i++) {
         stringToReturn += " ";
-        stringToReturn += childNodes[i]->toStringWithChildren();
+        stringToReturn += this->childNodes[i]->toStringWithChildren();
     }
     return stringToReturn;
 }
 
-void OperatorNode::joinNode(Node *nodeToJoin) {
-    Node *firstChild = childNodes[0];
+template <typename T>
+void OperatorNode<T>::joinNode(Node<T> *nodeToJoin) {
+    Node<T> *firstChild = this->childNodes[0];
     if (firstChild->hasChildren()) {
         firstChild->joinNode(nodeToJoin);
     } else {
         delete firstChild;
-        childNodes[0] = nodeToJoin;
+        this->childNodes[0] = nodeToJoin;
     }
 }
 
-Node* OperatorNode::allocateAndReturnPointer(std::string userInput) {
+template <typename T>
+Node<T>* OperatorNode<T>::allocateAndReturnPointer(std::string userInput) {
     if (userInput == PLUS_OPERATOR_DISPLAY_LABEL) {
         return new OperatorNode(PLUS_OPERATOR_DISPLAY_LABEL);
     }
@@ -139,29 +151,42 @@ Node* OperatorNode::allocateAndReturnPointer(std::string userInput) {
     if (userInput == COSINUS_OPERATOR_DISPLAY_LABEL) {
         return new OperatorNode(COSINUS_OPERATOR_DISPLAY_LABEL);
     }
-    if (Valuation::isConstant(userInput)) {
-        double constantValue = std::stod(userInput);
-        return new ConstantNode(constantValue);
+    if (Valuation<T>::isConstant(userInput)) {
+//        double constantValue = std::stod(userInput);
+//        return new ConstantNode<T>(constantValue);
+        return getConstantValueNode(userInput);
     }
     
     removeInvalidCharacters(userInput);
     
-    if (Valuation::isConstant(userInput)) {
+    if (Valuation<T>::isConstant(userInput)) {
         userInput = DEFAULT_VARIABLE_FIRST_LETTER + userInput;
     }
     
-    return new VariableNode(userInput);
+    return new VariableNode<T>(userInput);
 }
 
-Node* OperatorNode::allocateDefaultConstantNode() {
-    return new ConstantNode();
+template <typename T>
+Node<T>* OperatorNode<T>::allocateDefaultConstantNode() {
+    return new ConstantNode<T>();
 }
 
-void OperatorNode::removeInvalidCharacters(std::string &userInput) {
+template <typename T>
+void OperatorNode<T>::removeInvalidCharacters(std::string &userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
             return !std::isalnum(c);
         }), userInput.end());
+}
+
+template <typename T>
+Node<T>* OperatorNode<T>::getConstantValueNode(const std::string userInput) {
+    return new ConstantNode<T>();
+}
+
+template <>
+inline Node<int>* OperatorNode<int>::getConstantValueNode(const std::string userInput) {
+    return new ConstantNode<int>(std::stoi(userInput));
 }
 
 #endif
