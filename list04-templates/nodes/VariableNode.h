@@ -12,8 +12,8 @@ public:
     
     Node<T>* clone() const override;
     
-    T evaluate(const Valuation<T> &valuation) const override;
-    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) override;
+    T evaluate(const Valuation<T>& valuation) const override;
+    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier& warningNotifier) override;
     void addVariableNames(std::set<std::string>* variableNames) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
@@ -35,17 +35,17 @@ Node<T>* VariableNode<T>::clone() const {
 }
 
 template <typename T>
-T VariableNode<T>::evaluate(const Valuation<T> &valuation) const {
+T VariableNode<T>::evaluate(const Valuation<T>& valuation) const {
     return valuation.evaluateVariable(variableName);
 }
 
 template <typename T>
-void VariableNode<T>::createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {
+void VariableNode<T>::createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier& warningNotifier) {
     addVariableNames(variableNames);
 }
 
 template <typename T>
-void VariableNode<T>::addVariableNames(std::set<std::string> *variableNames) const {
+void VariableNode<T>::addVariableNames(std::set<std::string>* variableNames) const {
     variableNames->insert(variableName);
 }
 

@@ -13,28 +13,28 @@ template <typename T>
 class Tree {
 public:
     Tree();
-    Tree(const Tree<T> &copy);
+    Tree(const Tree<T>& copy);
     
-    Tree<T>& operator=(const Tree<T> &other);
-    void makeCopy(const Tree<T> &other);
+    Tree<T>& operator=(const Tree<T>& other);
+    void makeCopy(const Tree<T>& other);
     
-    Tree<T> operator+(const Tree<T> &other) const;
+    Tree<T> operator+(const Tree<T>& other) const;
     
     ~Tree();
     
-    void enterNewTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
+    void enterNewTree(std::deque<std::string>& userArgs, WarningNotifier& warningNotifier);
     std::string toPrefixNotation();
-    T evaluate(const Valuation<T> &valuation);
-    void joinTree(std::deque<std::string>& userArgs, WarningNotifier &warningNotifier);
-    void joinAndUpdateVariableNames(Node<T> *newRootNode);
+    T evaluate(const Valuation<T>& valuation);
+    void joinTree(std::deque<std::string>& userArgs, WarningNotifier& warningNotifier);
+    void joinAndUpdateVariableNames(Node<T>* newRootNode);
     std::string getVariableNamesString();
     std::set<std::string>* getVariableNamesSet() const;
     
 private:
-    Node<T> *rootNode;
-    std::set<std::string> *variableNames;
+    Node<T>* rootNode;
+    std::set<std::string>* variableNames;
     
-    void joinNode(Node<T> *otherRootNode);
+    void joinNode(Node<T>* otherRootNode);
     void deallocateMemory();
 };
 
@@ -44,12 +44,12 @@ Tree<T>::Tree(): rootNode(nullptr) {
 }
 
 template <typename T>
-Tree<T>::Tree(const Tree<T> &copy) {
+Tree<T>::Tree(const Tree<T>& copy) {
     makeCopy(copy);
 }
 
 template <typename T>
-Tree<T>& Tree<T>::operator=(const Tree<T> &other) {
+Tree<T>& Tree<T>::operator=(const Tree<T>& other) {
     if (this != &other) {
         deallocateMemory();
         makeCopy(other);
@@ -58,7 +58,7 @@ Tree<T>& Tree<T>::operator=(const Tree<T> &other) {
 }
 
 template <typename T>
-void Tree<T>::makeCopy(const Tree<T> &other) {
+void Tree<T>::makeCopy(const Tree<T>& other) {
     rootNode = other.rootNode->clone();
     variableNames = new std::set<std::string>(*other.variableNames);
 }
@@ -69,7 +69,7 @@ Tree<T>::~Tree() {
 }
 
 template <typename T>
-void Tree<T>::enterNewTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
+void Tree<T>::enterNewTree(std::deque<std::string>& userArgs, WarningNotifier& warningNotifier) {
     if (userArgs.empty()) {
         deallocateMemory();
         rootNode = nullptr;
@@ -98,7 +98,7 @@ std::string Tree<T>::toPrefixNotation() {
 }
 
 template <typename T>
-T Tree<T>::evaluate(const Valuation<T> &valuation) {
+T Tree<T>::evaluate(const Valuation<T>& valuation) {
     if (rootNode != nullptr) {
         return rootNode->evaluate(valuation);
     }
@@ -106,11 +106,11 @@ T Tree<T>::evaluate(const Valuation<T> &valuation) {
 }
 
 template <typename T>
-void Tree<T>::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warningNotifier) {
+void Tree<T>::joinTree(std::deque<std::string>& userArgs, WarningNotifier& warningNotifier) {
     if (userArgs.empty()) {
         return;
     }
-    Node<T> *newRootNode;
+    Node<T>* newRootNode;
     std::string nextArg = userArgs.front();
     userArgs.pop_front();
     newRootNode = OperatorNode<T>::allocateAndReturnPointer(nextArg);
@@ -124,7 +124,7 @@ void Tree<T>::joinTree(std::deque<std::string> &userArgs, WarningNotifier &warni
 }
 
 template <typename T>
-Tree<T> Tree<T>::operator+(const Tree<T> &other) const {
+Tree<T> Tree<T>::operator+(const Tree<T>& other) const {
     Tree<T> resultTree(*this);
     Node<T>* newRootNode = other.rootNode->clone();
     
@@ -134,7 +134,7 @@ Tree<T> Tree<T>::operator+(const Tree<T> &other) const {
 }
 
 template <typename T>
-inline void Tree<T>::joinAndUpdateVariableNames(Node<T> *newRootNode) {
+inline void Tree<T>::joinAndUpdateVariableNames(Node<T>* newRootNode) {
     joinNode(newRootNode);
     variableNames->clear();
     rootNode->addVariableNames(variableNames);
@@ -156,7 +156,7 @@ std::set<std::string>* Tree<T>::getVariableNamesSet() const {
 }
 
 template <typename T>
-void Tree<T>::joinNode(Node<T> *otherRootNode) {
+void Tree<T>::joinNode(Node<T>* otherRootNode) {
     if (rootNode == nullptr) {
         rootNode = otherRootNode;
     } else if (!rootNode->hasChildren()) {

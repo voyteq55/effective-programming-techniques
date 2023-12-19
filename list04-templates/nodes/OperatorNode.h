@@ -30,12 +30,12 @@ public:
     
     Node<T>* clone() const override;
     
-    T evaluate(const Valuation<T> &valuation) const override;
-    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) override;
+    T evaluate(const Valuation<T>& valuation) const override;
+    void createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier& warningNotifier) override;
     void addVariableNames(std::set<std::string>* variableNames) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
-    void joinNode(Node<T> *nodeToJoin) override;
+    void joinNode(Node<T>* nodeToJoin) override;
     
     static Node<T>* allocateAndReturnPointer(std::string userInput);
     static Node<T>* allocateDefaultConstantNode();
@@ -68,7 +68,7 @@ Node<T>* OperatorNode<T>::clone() const {
 }
 
 template <typename T>
-T OperatorNode<T>::evaluate(const Valuation<T> &valuation) const {
+T OperatorNode<T>::evaluate(const Valuation<T>& valuation) const {
     if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL)
         return OperatorFunctions<T>::plus(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
     if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL)
@@ -85,7 +85,7 @@ T OperatorNode<T>::evaluate(const Valuation<T> &valuation) const {
 }
 
 template <typename T>
-void OperatorNode<T>::createChildren(std::deque<std::string> &userArgs, std::set<std::string>* variableNames, WarningNotifier &warningNotifier) {
+void OperatorNode<T>::createChildren(std::deque<std::string>& userArgs, std::set<std::string>* variableNames, WarningNotifier& warningNotifier) {
     for (int i = 0; i < this->numberOfArguments; i++) {
         if (!userArgs.empty()) {
             std::string argString = userArgs.front();
@@ -100,7 +100,7 @@ void OperatorNode<T>::createChildren(std::deque<std::string> &userArgs, std::set
 }
 
 template <typename T>
-void OperatorNode<T>::addVariableNames(std::set<std::string> *variableNames) const {
+void OperatorNode<T>::addVariableNames(std::set<std::string>* variableNames) const {
     for (int i = 0; i < this->numberOfArguments; i++) {
         this->childNodes[i]->addVariableNames(variableNames);
     }
@@ -122,8 +122,8 @@ std::string OperatorNode<T>::toStringWithChildren() const {
 }
 
 template <typename T>
-void OperatorNode<T>::joinNode(Node<T> *nodeToJoin) {
-    Node<T> *firstChild = this->childNodes[0];
+void OperatorNode<T>::joinNode(Node<T>* nodeToJoin) {
+    Node<T>* firstChild = this->childNodes[0];
     if (firstChild->hasChildren()) {
         firstChild->joinNode(nodeToJoin);
     } else {
@@ -171,10 +171,10 @@ Node<T>* OperatorNode<T>::allocateDefaultConstantNode() {
 }
 
 template <typename T>
-void OperatorNode<T>::removeInvalidCharacters(std::string &userInput) {}
+void OperatorNode<T>::removeInvalidCharacters(std::string& userInput) {}
 
 template <>
-inline void OperatorNode<int>::removeInvalidCharacters(std::string &userInput) {
+inline void OperatorNode<int>::removeInvalidCharacters(std::string& userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
             return !std::isalnum(c);
@@ -182,10 +182,10 @@ inline void OperatorNode<int>::removeInvalidCharacters(std::string &userInput) {
 }
 
 template <>
-inline void OperatorNode<double>::removeInvalidCharacters(std::string &userInput) {
+inline void OperatorNode<double>::removeInvalidCharacters(std::string& userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
-            return !std::isalnum(c) && c != '.';
+            return !std::isalnum(c) && c != COMMA;
         }), userInput.end());
 }
 

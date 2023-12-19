@@ -34,7 +34,7 @@ public:
     void start();
     
 private:
-    std::string executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier &warningNotifier);
+    std::string executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier& warningNotifier);
     std::deque<std::string> getInputDeque();
     
     bool isProgramRunning;
@@ -70,7 +70,7 @@ void ConsoleController<T>::start() {
 }
 
 template <typename T>
-std::string ConsoleController<T>::executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier &warningNotifier) {
+std::string ConsoleController<T>::executeCommand(std::string commandName, std::deque<std::string> userArgs, WarningNotifier& warningNotifier) {
     if (commandName == ENTER_COMMAND) {
         tree.enterNewTree(userArgs, warningNotifier);
         return ENTER_TREE_MESSAGE + tree.toPrefixNotation();

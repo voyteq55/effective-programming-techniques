@@ -16,7 +16,7 @@ public:
     
     Node<T>* clone() const override;
     
-    T evaluate(const Valuation<T> &valuation) const override;
+    T evaluate(const Valuation<T>& valuation) const override;
     std::string toString() const override;
     std::string toStringWithChildren() const override;
     
@@ -46,7 +46,7 @@ Node<T>* ConstantNode<T>::clone() const {
 }
 
 template <typename T>
-T ConstantNode<T>::evaluate(const Valuation<T> &valuation) const {
+T ConstantNode<T>::evaluate(const Valuation<T>& valuation) const {
     return constantValue;
 }
 

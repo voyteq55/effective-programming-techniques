@@ -15,7 +15,7 @@ class Valuation {
 public:
     Valuation();
     
-    bool setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier);
+    bool setValuation(std::deque<std::string>& userArgs, const std::set<std::string>* variableNames, WarningNotifier& warningNotifier);
     T evaluateVariable(std::string variableName) const;
     
     static bool isConstant(const std::string userInput);
@@ -31,7 +31,7 @@ template <typename T>
 Valuation<T>::Valuation() {}
 
 template <typename T>
-bool Valuation<T>::setValuation(std::deque<std::string> &userArgs, const std::set<std::string> *variableNames, WarningNotifier &warningNotifier) {
+bool Valuation<T>::setValuation(std::deque<std::string>& userArgs, const std::set<std::string>* variableNames, WarningNotifier& warningNotifier) {
     variableValues.clear();
     if (userArgs.size() != variableNames->size()) {
         warningNotifier.notifyCompIncorrectArgumentNumber(variableNames->size(), userArgs.size());
