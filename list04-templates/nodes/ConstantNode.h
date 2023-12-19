@@ -67,7 +67,7 @@ inline std::string ConstantNode<double>::toString() const {
 
 template <>
 inline std::string ConstantNode<std::string>::toString() const {
-    return constantValue;
+    return "\"" + constantValue + "\"";
 }
 
 template <typename T>
