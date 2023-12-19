@@ -57,12 +57,12 @@ std::string ConstantNode<T>::toString() const {
 
 template <>
 std::string ConstantNode<int>::toString() const {
-    return std::to_string(static_cast<int>(constantValue));
+    return std::to_string(constantValue);
 }
 
 template <>
 std::string ConstantNode<double>::toString() const {
-    return std::to_string(static_cast<double>(constantValue));
+    return std::to_string(constantValue);
 }
 
 template <>

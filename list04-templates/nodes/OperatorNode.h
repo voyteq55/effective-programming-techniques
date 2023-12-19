@@ -15,12 +15,22 @@ const std::string DIVIDE_OPERATOR_DISPLAY_LABEL = "/";
 const std::string SINUS_OPERATOR_DISPLAY_LABEL = "sin";
 const std::string COSINUS_OPERATOR_DISPLAY_LABEL = "cos";
 
+
 const int PLUS_OPERATOR_NUMBER_OF_ARGUMENTS = 2;
 const int MINUS_OPERATOR_NUMBER_OF_ARGUMENTS = 2;
 const int MULTIPLY_OPERATOR_NUMBER_OF_ARGUMENTS = 2;
 const int DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS = 2;
 const int SINUS_OPERATOR_NUMBER_OF_ARGUMENTS = 1;
 const int COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS = 1;
+
+const std::unordered_map<std::string, int> OPERATOR_TO_NUMBER_OF_ARGUMENTS = {
+    {PLUS_OPERATOR_DISPLAY_LABEL, PLUS_OPERATOR_NUMBER_OF_ARGUMENTS},
+    {MINUS_OPERATOR_DISPLAY_LABEL, MINUS_OPERATOR_NUMBER_OF_ARGUMENTS},
+    {MULTIPLY_OPERATOR_DISPLAY_LABEL, MULTIPLY_OPERATOR_NUMBER_OF_ARGUMENTS},
+    {DIVIDE_OPERATOR_DISPLAY_LABEL, DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS},
+    {SINUS_OPERATOR_DISPLAY_LABEL, SINUS_OPERATOR_NUMBER_OF_ARGUMENTS},
+    {COSINUS_OPERATOR_DISPLAY_LABEL, COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS}
+};
 
 template <typename T>
 class OperatorNode: public Node<T> {
@@ -40,7 +50,7 @@ public:
     static Node<T>* allocateAndReturnPointer(std::string userInput);
     static Node<T>* allocateDefaultConstantNode();
     static void removeInvalidCharacters(std::string& userInput);
-    static Node<T>* getConstantValueNode(const std::string userInput);
+    static Node<T>* getNewConstantValueNode(const std::string userInput);
     
 };
 
@@ -52,12 +62,10 @@ OperatorNode<T>::OperatorNode() {
 template <typename T>
 OperatorNode<T>::OperatorNode(std::string label) {
     this->displayLabel = label;
-    if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = PLUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = MINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = MULTIPLY_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = DIVIDE_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = SINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
-    if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL) this->numberOfArguments = COSINUS_OPERATOR_NUMBER_OF_ARGUMENTS;
+    auto foundOperatorPosition = OPERATOR_TO_NUMBER_OF_ARGUMENTS.find(label);
+    if (foundOperatorPosition != OPERATOR_TO_NUMBER_OF_ARGUMENTS.end()) {
+        this->numberOfArguments = foundOperatorPosition->second;
+    }
     this->childNodes = new Node<T>*[this->numberOfArguments];
 }
 
@@ -69,18 +77,24 @@ Node<T>* OperatorNode<T>::clone() const {
 
 template <typename T>
 T OperatorNode<T>::evaluate(const Valuation<T>& valuation) const {
-    if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL)
+    if (this->displayLabel == PLUS_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::plus(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
-    if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL)
+    }
+    if (this->displayLabel == MINUS_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::minus(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
-    if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL)
+    }
+    if (this->displayLabel == MULTIPLY_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::multiply(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
-    if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL)
+    }
+    if (this->displayLabel == DIVIDE_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::divide(this->childNodes[0]->evaluate(valuation), this->childNodes[1]->evaluate(valuation));
-    if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL)
+    }
+    if (this->displayLabel == SINUS_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::sinus(this->childNodes[0]->evaluate(valuation));
-    if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL)
+    }
+    if (this->displayLabel == COSINUS_OPERATOR_DISPLAY_LABEL) {
         return OperatorFunctions<T>::cosinus(this->childNodes[0]->evaluate(valuation));
+    }
     return T();
 }
 
@@ -134,26 +148,11 @@ void OperatorNode<T>::joinNode(Node<T>* nodeToJoin) {
 
 template <typename T>
 Node<T>* OperatorNode<T>::allocateAndReturnPointer(std::string userInput) {
-    if (userInput == PLUS_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(PLUS_OPERATOR_DISPLAY_LABEL);
-    }
-    if (userInput == MINUS_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(MINUS_OPERATOR_DISPLAY_LABEL);
-    }
-    if (userInput == MULTIPLY_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(MULTIPLY_OPERATOR_DISPLAY_LABEL);
-    }
-    if (userInput == DIVIDE_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(DIVIDE_OPERATOR_DISPLAY_LABEL);
-    }
-    if (userInput == SINUS_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(SINUS_OPERATOR_DISPLAY_LABEL);
-    }
-    if (userInput == COSINUS_OPERATOR_DISPLAY_LABEL) {
-        return new OperatorNode(COSINUS_OPERATOR_DISPLAY_LABEL);
+    if (OPERATOR_TO_NUMBER_OF_ARGUMENTS.find(userInput) != OPERATOR_TO_NUMBER_OF_ARGUMENTS.end()) {
+        return new OperatorNode(userInput);
     }
     if (Valuation<T>::isConstant(userInput)) {
-        return getConstantValueNode(userInput);
+        return getNewConstantValueNode(userInput);
     }
     
     removeInvalidCharacters(userInput);
@@ -161,7 +160,6 @@ Node<T>* OperatorNode<T>::allocateAndReturnPointer(std::string userInput) {
     if (Valuation<T>::isConstant(userInput)) {
         userInput = DEFAULT_VARIABLE_FIRST_LETTER + userInput;
     }
-    
     return new VariableNode<T>(userInput);
 }
 
@@ -190,22 +188,22 @@ void OperatorNode<double>::removeInvalidCharacters(std::string& userInput) {
 }
 
 template <typename T>
-Node<T>* OperatorNode<T>::getConstantValueNode(const std::string userInput) {
+Node<T>* OperatorNode<T>::getNewConstantValueNode(const std::string userInput) {
     return new ConstantNode<T>();
 }
 
 template <>
-Node<int>* OperatorNode<int>::getConstantValueNode(const std::string userInput) {
+Node<int>* OperatorNode<int>::getNewConstantValueNode(const std::string userInput) {
     return new ConstantNode<int>(std::stoi(userInput));
 }
 
 template <>
-Node<double>* OperatorNode<double>::getConstantValueNode(const std::string userInput) {
+Node<double>* OperatorNode<double>::getNewConstantValueNode(const std::string userInput) {
     return new ConstantNode<double>(std::stod(userInput));
 }
 
 template <>
-Node<std::string>* OperatorNode<std::string>::getConstantValueNode(const std::string userInput) {
+Node<std::string>* OperatorNode<std::string>::getNewConstantValueNode(const std::string userInput) {
     return new ConstantNode<std::string>(userInput.substr(1, userInput.size() - 2));
 }
 
