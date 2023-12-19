@@ -36,7 +36,7 @@ void tests() {
 
 int main() {
     tests();
-    ConsoleController<std::string> consoleController;
+    ConsoleController<double> consoleController;
     consoleController.start();
     return 0;
 }

@@ -71,9 +71,19 @@ bool Valuation<int>::isConstant(const std::string userInput) {
 
 template <>
 inline bool Valuation<double>::isConstant(const std::string userInput) {
-    return std::all_of(userInput.begin(), userInput.end(), [](char c) {
-        return std::isdigit(c) || c == COMMA;
-    });
+    if (userInput == std::string(1, COMMA)) {
+        return false;
+    }
+    int numberOfCommas = 0;
+    for (char c : userInput) {
+        if (!std::isdigit(c)) {
+            if (c != COMMA || numberOfCommas > 0) {
+                return false;
+            }
+            numberOfCommas++;
+        }
+    }
+    return true;
 }
 
 template <>
