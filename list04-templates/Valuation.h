@@ -70,7 +70,7 @@ bool Valuation<int>::isConstant(const std::string userInput) {
 }
 
 template <>
-inline bool Valuation<double>::isConstant(const std::string userInput) {
+bool Valuation<double>::isConstant(const std::string userInput) {
     if (userInput == std::string(1, COMMA)) {
         return false;
     }
@@ -97,17 +97,17 @@ T Valuation<T>::getConstantValue(const std::string userInput) {
 }
 
 template <>
-inline int Valuation<int>::getConstantValue(const std::string userInput) {
+int Valuation<int>::getConstantValue(const std::string userInput) {
     return std::stoi(userInput);
 }
 
 template <>
-inline double Valuation<double>::getConstantValue(const std::string userInput) {
+double Valuation<double>::getConstantValue(const std::string userInput) {
     return std::stod(userInput);
 }
 
 template <>
-inline std::string Valuation<std::string>::getConstantValue(const std::string userInput) {
+std::string Valuation<std::string>::getConstantValue(const std::string userInput) {
     return userInput.substr(1, userInput.size() - 2);
 }
 
@@ -117,17 +117,17 @@ std::string Valuation<T>::toString(T value) {
 }
 
 template <>
-inline std::string Valuation<int>::toString(int value) {
+std::string Valuation<int>::toString(int value) {
     return std::to_string(value);
 }
 
 template <>
-inline std::string Valuation<double>::toString(double value) {
+std::string Valuation<double>::toString(double value) {
     return std::to_string(value);
 }
 
 template <>
-inline std::string Valuation<std::string>::toString(std::string value) {
+std::string Valuation<std::string>::toString(std::string value) {
     return value;
 }
 

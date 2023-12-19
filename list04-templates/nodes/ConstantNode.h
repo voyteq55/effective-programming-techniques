@@ -29,13 +29,13 @@ template <typename T>
 ConstantNode<T>::ConstantNode(): constantValue(T()) {}
 
 template <>
-inline ConstantNode<int>::ConstantNode(): constantValue(DEFAULT_CONSTANT_INT_VALUE) {}
+ConstantNode<int>::ConstantNode(): constantValue(DEFAULT_CONSTANT_INT_VALUE) {}
 
 template <>
-inline ConstantNode<double>::ConstantNode(): constantValue(DEFAULT_CONSTANT_DOUBLE_VALUE) {}
+ConstantNode<double>::ConstantNode(): constantValue(DEFAULT_CONSTANT_DOUBLE_VALUE) {}
 
 template <>
-inline ConstantNode<std::string>::ConstantNode(): constantValue(DEFAULT_CONSTANT_STRING_VALUE) {}
+ConstantNode<std::string>::ConstantNode(): constantValue(DEFAULT_CONSTANT_STRING_VALUE) {}
 
 template <typename T>
 ConstantNode<T>::ConstantNode(T value): constantValue(value) {}
@@ -56,17 +56,17 @@ std::string ConstantNode<T>::toString() const {
 }
 
 template <>
-inline std::string ConstantNode<int>::toString() const {
+std::string ConstantNode<int>::toString() const {
     return std::to_string(static_cast<int>(constantValue));
 }
 
 template <>
-inline std::string ConstantNode<double>::toString() const {
+std::string ConstantNode<double>::toString() const {
     return std::to_string(static_cast<double>(constantValue));
 }
 
 template <>
-inline std::string ConstantNode<std::string>::toString() const {
+std::string ConstantNode<std::string>::toString() const {
     return "\"" + constantValue + "\"";
 }
 

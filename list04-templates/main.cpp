@@ -36,7 +36,7 @@ void tests() {
 
 int main() {
     tests();
-    ConsoleController<double> consoleController;
+    ConsoleController<int> consoleController;
     consoleController.start();
     return 0;
 }

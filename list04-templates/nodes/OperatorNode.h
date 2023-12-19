@@ -174,7 +174,7 @@ template <typename T>
 void OperatorNode<T>::removeInvalidCharacters(std::string& userInput) {}
 
 template <>
-inline void OperatorNode<int>::removeInvalidCharacters(std::string& userInput) {
+void OperatorNode<int>::removeInvalidCharacters(std::string& userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
             return !std::isalnum(c);
@@ -182,7 +182,7 @@ inline void OperatorNode<int>::removeInvalidCharacters(std::string& userInput) {
 }
 
 template <>
-inline void OperatorNode<double>::removeInvalidCharacters(std::string& userInput) {
+void OperatorNode<double>::removeInvalidCharacters(std::string& userInput) {
     userInput.erase(
         std::remove_if(userInput.begin(), userInput.end(), [](char c) {
             return !std::isalnum(c) && c != COMMA;
@@ -195,17 +195,17 @@ Node<T>* OperatorNode<T>::getConstantValueNode(const std::string userInput) {
 }
 
 template <>
-inline Node<int>* OperatorNode<int>::getConstantValueNode(const std::string userInput) {
+Node<int>* OperatorNode<int>::getConstantValueNode(const std::string userInput) {
     return new ConstantNode<int>(std::stoi(userInput));
 }
 
 template <>
-inline Node<double>* OperatorNode<double>::getConstantValueNode(const std::string userInput) {
+Node<double>* OperatorNode<double>::getConstantValueNode(const std::string userInput) {
     return new ConstantNode<double>(std::stod(userInput));
 }
 
 template <>
-inline Node<std::string>* OperatorNode<std::string>::getConstantValueNode(const std::string userInput) {
+Node<std::string>* OperatorNode<std::string>::getConstantValueNode(const std::string userInput) {
     return new ConstantNode<std::string>(userInput.substr(1, userInput.size() - 2));
 }
 

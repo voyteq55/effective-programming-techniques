@@ -134,7 +134,7 @@ Tree<T> Tree<T>::operator+(const Tree<T>& other) const {
 }
 
 template <typename T>
-inline void Tree<T>::joinAndUpdateVariableNames(Node<T>* newRootNode) {
+void Tree<T>::joinAndUpdateVariableNames(Node<T>* newRootNode) {
     joinNode(newRootNode);
     variableNames->clear();
     rootNode->addVariableNames(variableNames);
