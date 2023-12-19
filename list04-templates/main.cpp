@@ -8,7 +8,7 @@ void assertEquals(std::string expected, std::string actual) {
     }
 }
 
-void tests() {
+void runStringOperatorsTests() {
     std::cout << "PLUS:\n";
     assertEquals("abcdef", OperatorFunctions<std::string>::plus("abc", "def"));
     
@@ -35,7 +35,6 @@ void tests() {
 }
 
 int main() {
-    tests();
     ConsoleController<double> consoleController;
     consoleController.start();
     return 0;
