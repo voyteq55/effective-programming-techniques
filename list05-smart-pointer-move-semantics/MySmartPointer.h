@@ -76,7 +76,7 @@ void MySmartPointer<T>::createPointer(const MySmartPointer<T> &other) {
 
 template <typename T>
 void MySmartPointer<T>::deallocate() {
-    std::cout << *pointer << ": pointer not in use\n";
+    std::cout << *pointer << ": pointed object not in use, calling destructor\n";
     delete pointer;
     delete refCounter;
 }

@@ -8,6 +8,7 @@ public:
     int increase();
     int decrease();
     int get();
+    
 private:
     int refCount;
 };

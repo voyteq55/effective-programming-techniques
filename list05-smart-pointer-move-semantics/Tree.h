@@ -6,6 +6,7 @@
 #include <string>
 #include <deque>
 #include <set>
+#include <iostream>
 
 const std::string EMPTY_TREE_REPRESENTATION = "<empty tree>";
 
@@ -14,11 +15,16 @@ class Tree {
 public:
     Tree();
     Tree(const Tree<T>& copy);
+    Tree(Tree<T>&& other);
     
     Tree<T>& operator=(const Tree<T>& other);
-    void makeCopy(const Tree<T>& other);
+    Tree<T>& operator=(Tree<T>&& other);
     
-    Tree<T> operator+(const Tree<T>& other) const;
+    void makeCopy(const Tree<T>& other);
+    void moveTree(Tree<T>&& other);
+    
+    Tree<T> operator+(const Tree<T>& other) const &;
+    Tree<T> operator+(const Tree<T>& other) &&;
     
     ~Tree();
     
@@ -49,6 +55,11 @@ Tree<T>::Tree(const Tree<T>& copy) {
 }
 
 template <typename T>
+Tree<T>::Tree(Tree<T>&& other) {
+    moveTree(std::move(other));
+}
+
+template <typename T>
 Tree<T>& Tree<T>::operator=(const Tree<T>& other) {
     if (this != &other) {
         deallocateMemory();
@@ -58,13 +69,33 @@ Tree<T>& Tree<T>::operator=(const Tree<T>& other) {
 }
 
 template <typename T>
+Tree<T>& Tree<T>::operator=(Tree<T>&& other) {
+    if (this != &other) {
+        deallocateMemory();
+        moveTree(std::move(other));
+    }
+    return *this;
+}
+
+template <typename T>
 void Tree<T>::makeCopy(const Tree<T>& other) {
     rootNode = other.rootNode->clone();
     variableNames = new std::set<std::string>(*other.variableNames);
+    std::cout << "created copy: " << this->toPrefixNotation() << "\n";
+}
+
+template <typename T>
+void Tree<T>::moveTree(Tree<T>&& other) {
+    rootNode = other.rootNode;
+    variableNames = other.variableNames;
+    other.rootNode = nullptr;
+    other.variableNames = nullptr;
+    std::cout << "moved tree with move semantics: " << this->toPrefixNotation() << "\n";
 }
 
 template <typename T>
 Tree<T>::~Tree() {
+    std::cout << "called destructor: " << this->toPrefixNotation() << "\n";
     deallocateMemory();
 }
 
@@ -124,8 +155,18 @@ void Tree<T>::joinTree(std::deque<std::string>& userArgs, WarningNotifier& warni
 }
 
 template <typename T>
-Tree<T> Tree<T>::operator+(const Tree<T>& other) const {
+Tree<T> Tree<T>::operator+(const Tree<T>& other) const & {
     Tree<T> resultTree(*this);
+    Node<T>* newRootNode = other.rootNode->clone();
+    
+    resultTree.joinAndUpdateVariableNames(newRootNode);
+    
+    return resultTree;
+}
+
+template <typename T>
+Tree<T> Tree<T>::operator+(const Tree<T>& other) && {
+    Tree<T> resultTree(std::move(*this));
     Node<T>* newRootNode = other.rootNode->clone();
     
     resultTree.joinAndUpdateVariableNames(newRootNode);
@@ -169,6 +210,7 @@ void Tree<T>::joinNode(Node<T>* otherRootNode) {
 
 template <typename T>
 void Tree<T>::deallocateMemory() {
+    std::cout << "deallocating tree fields: " << this->toPrefixNotation() << "\n";
     delete rootNode;
     delete variableNames;
 }
