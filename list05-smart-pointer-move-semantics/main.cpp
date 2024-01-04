@@ -1,5 +1,6 @@
 #include <iostream>
 #include "MySmartPointer.h"
+#include "ConsoleController.h"
 
 void test(MySmartPointer<std::string> p) {
     std::cout << "some function\n";
@@ -22,6 +23,9 @@ int main() {
     std::cout << aaa->length() << "\n";
     
     test(bbb);
+    
+    ConsoleController<int> consoleController;
+    consoleController.start();
     
     return 0;
 }
